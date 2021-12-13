@@ -36,10 +36,7 @@ func NewStorage(ctx context.Context, bucketName string, opts ...option.ClientOpt
 
 // Store puts value at key.
 func (s *Storage) Store(key string, value []byte) error {
-	ctx := context.Background()
-	obj := s.bucket.Object(key)
-
-	w := obj.NewWriter(ctx)
+	w := s.bucket.Object(key).NewWriter(context.Background())
 	if _, err := w.Write(value); err != nil {
 		return fmt.Errorf("writing object %s: %v", key, err)
 	}
