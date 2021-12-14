@@ -27,9 +27,13 @@ const (
 	testBucket = "some-bucket"
 )
 
-func pebbleHandler() http.Handler {
+func pebbleHandler(t *testing.T) http.Handler {
 	os.Setenv("PEBBLE_VA_ALWAYS_VALID", "1")
 	os.Setenv("PEBBLE_VA_NOSLEEP", "1")
+	t.Cleanup(func() {
+		os.Unsetenv("PEBBLE_VA_ALWAYS_VALID")
+		os.Unsetenv("PEBBLE_VA_NOSLEEP")
+	})
 	logger := log.New(os.Stdout, "Pebble ", log.LstdFlags)
 	db := db.NewMemoryStore()
 	ca := ca.New(logger, db, "", 0, 1, 100)
@@ -50,7 +54,7 @@ func TestGCSStorage(t *testing.T) {
 	defer gcs.Stop()
 
 	// start let's encrypt
-	pebble := httptest.NewTLSServer(pebbleHandler())
+	pebble := httptest.NewTLSServer(pebbleHandler(t))
 	defer pebble.Close()
 
 	// Setup cert-magic
