@@ -48,7 +48,7 @@ func TestGCSStorage(t *testing.T) {
 		},
 	})
 	defer gcs.Stop()
-	fmt.Println(gcs.PublicURL())
+
 	// start let's encrypt
 	pebble := httptest.NewTLSServer(pebbleHandler())
 	defer pebble.Close()
