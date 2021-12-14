@@ -19,16 +19,21 @@ var (
 	LockPollInterval = 1 * time.Second
 )
 
-// Storage implements certmagic#Storage
-// https://pkg.go.dev/github.com/caddyserver/certmagic#Storage
+// Storage is a certmagic.Storage backed by a GCS bucket
 type Storage struct {
 	bucket *storage.BucketHandle
 }
 
+// Interface guards
+var (
+	_ certmagic.Storage = (*Storage)(nil)
+	_ certmagic.Locker  = (*Storage)(nil)
+)
+
 func NewStorage(ctx context.Context, bucketName string, opts ...option.ClientOption) (*Storage, error) {
 	client, err := storage.NewClient(ctx, opts...)
 	if err != nil {
-		return nil, fmt.Errorf("could not initialize storage client: %v", err)
+		return nil, fmt.Errorf("could not initialize storage client: %w", err)
 	}
 	bucket := client.Bucket(bucketName)
 	return &Storage{bucket: bucket}, nil
@@ -36,18 +41,18 @@ func NewStorage(ctx context.Context, bucketName string, opts ...option.ClientOpt
 
 // Store puts value at key.
 func (s *Storage) Store(key string, value []byte) error {
-	w := s.bucket.Object(key).NewWriter(context.Background())
+	w := s.bucket.Object(key).NewWriter(context.TODO())
 	if _, err := w.Write(value); err != nil {
-		return fmt.Errorf("writing object %s: %v", key, err)
+		return fmt.Errorf("writing object %s: %w", key, err)
 	}
 	return w.Close()
 }
 
 // Load retrieves the value at key.
 func (s *Storage) Load(key string) ([]byte, error) {
-	rc, err := s.bucket.Object(key).NewReader(context.Background())
+	rc, err := s.bucket.Object(key).NewReader(context.TODO())
 	if err != nil {
-		return nil, fmt.Errorf("loading object %s: %v", key, err)
+		return nil, fmt.Errorf("loading object %s: %w", key, err)
 	}
 	defer rc.Close()
 	return ioutil.ReadAll(rc)
@@ -57,8 +62,8 @@ func (s *Storage) Load(key string) ([]byte, error) {
 // returned only if the key still exists
 // when the method returns.
 func (s *Storage) Delete(key string) error {
-	if err := s.bucket.Object(key).Delete(context.Background()); err != nil {
-		return fmt.Errorf("deleting object %s: %v", key, err)
+	if err := s.bucket.Object(key).Delete(context.TODO()); err != nil {
+		return fmt.Errorf("deleting object %s: %w", key, err)
 	}
 	return nil
 }
@@ -66,7 +71,7 @@ func (s *Storage) Delete(key string) error {
 // Exists returns true if the key exists
 // and there was no error checking.
 func (s *Storage) Exists(key string) bool {
-	_, err := s.bucket.Object(key).Attrs(context.Background())
+	_, err := s.bucket.Object(key).Attrs(context.TODO())
 	return err != storage.ErrObjectNotExist
 }
 
@@ -81,14 +86,14 @@ func (s *Storage) List(prefix string, recursive bool) ([]string, error) {
 		query.Delimiter = "/"
 	}
 	var names []string
-	it := s.bucket.Objects(context.Background(), query)
+	it := s.bucket.Objects(context.TODO(), query)
 	for {
 		attrs, err := it.Next()
 		if err == iterator.Done {
 			break
 		}
 		if err != nil {
-			return nil, fmt.Errorf("listing objects: %v", err)
+			return nil, fmt.Errorf("listing objects: %w", err)
 		}
 		if attrs.Name != "" {
 			names = append(names, attrs.Name)
@@ -100,9 +105,9 @@ func (s *Storage) List(prefix string, recursive bool) ([]string, error) {
 // Stat returns information about key.
 func (s *Storage) Stat(key string) (certmagic.KeyInfo, error) {
 	var keyInfo certmagic.KeyInfo
-	attr, err := s.bucket.Object(key).Attrs(context.Background())
+	attr, err := s.bucket.Object(key).Attrs(context.TODO())
 	if err != nil {
-		return keyInfo, fmt.Errorf("loading attributes for %s: %v", key, err)
+		return keyInfo, fmt.Errorf("loading attributes for %s: %w", key, err)
 	}
 	keyInfo.Key = key
 	keyInfo.Modified = attr.Updated
@@ -140,26 +145,26 @@ func (s *Storage) Lock(ctx context.Context, key string) error {
 		if err == storage.ErrObjectNotExist {
 			w := obj.NewWriter(ctx)
 			if _, err := w.Write([]byte{}); err != nil {
-				return fmt.Errorf("creating %s: %v", lockKey, err)
+				return fmt.Errorf("creating %s: %w", lockKey, err)
 			}
 			if err := w.Close(); err != nil {
-				return fmt.Errorf("closing %s: %v", lockKey, err)
+				return fmt.Errorf("closing %s: %w", lockKey, err)
 			}
 			continue
 		} else if err != nil {
-			return fmt.Errorf("loading attributes %s: %v", lockKey, err)
+			return fmt.Errorf("loading attributes %s: %w", lockKey, err)
 		}
 		// Acquire the lock
 		if !attrs.TemporaryHold {
 			if _, err := obj.Update(ctx, storage.ObjectAttrsToUpdate{TemporaryHold: true}); err != nil {
-				return fmt.Errorf("setting temporary hold on object %s: %v", lockKey, err)
+				return fmt.Errorf("setting temporary hold on object %s: %w", lockKey, err)
 			}
 			return nil
 		}
 		// Unlock if the lock expired
 		if attrs.Updated.Add(LockExpiration).Before(time.Now().UTC()) {
 			if err := s.Unlock(key); err != nil {
-				return fmt.Errorf("unlocking expired lock %s: %v", lockKey, err)
+				return fmt.Errorf("unlocking expired lock %s: %w", lockKey, err)
 			}
 			continue
 		}
@@ -175,15 +180,15 @@ func (s *Storage) Lock(ctx context.Context, key string) error {
 func (s *Storage) Unlock(key string) error {
 	lockKey := s.objLockName(key)
 	obj := s.bucket.Object(lockKey)
-	_, err := obj.Update(context.Background(), storage.ObjectAttrsToUpdate{TemporaryHold: false})
+	_, err := obj.Update(context.TODO(), storage.ObjectAttrsToUpdate{TemporaryHold: false})
 	if err == storage.ErrObjectNotExist {
 		return nil
 	}
 	if err != nil {
-		return fmt.Errorf("could not remove temporary hold for %s: %v", lockKey, err)
+		return fmt.Errorf("could not remove temporary hold for %s: %w", lockKey, err)
 	}
 	if err := s.Delete(s.objLockName(key)); err != nil {
-		return fmt.Errorf("delting lock %s: %v", lockKey, err)
+		return fmt.Errorf("delting lock %s: %w", lockKey, err)
 	}
 	return nil
 }
