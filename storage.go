@@ -169,7 +169,12 @@ func (s *Storage) Lock(ctx context.Context, key string) error {
 			continue
 		}
 		// Wait and try again
-		time.Sleep(LockPollInterval)
+		select {
+		case <-time.After(LockPollInterval):
+			continue // a no-op since it's at the end of the loop, but nice to be explicit
+		case <-ctx.Done():
+			return ctx.Err()
+		}
 	}
 }
 
