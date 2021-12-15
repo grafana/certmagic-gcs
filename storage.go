@@ -13,7 +13,7 @@ import (
 )
 
 var (
-	// LockExpiration is the duration before wich a Lock is considered expired
+	// LockExpiration is the duration before which a Lock is considered expired
 	LockExpiration = 1 * time.Minute
 	// LockPollInterval is the interval between each check of the lock state.
 	LockPollInterval = 1 * time.Second
