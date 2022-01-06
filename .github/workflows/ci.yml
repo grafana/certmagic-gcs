@@ -1,0 +1,26 @@
+name: Tests
+on: [push]
+jobs:
+  test:
+    strategy:
+      matrix:
+        go: [ '1.17' ]
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Install Go
+      uses: actions/setup-go@v2
+      with:
+        go-version: ${{ matrix.go }}
+
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Get dependencies
+      run: |
+        go get -v -t -d ./...
+  
+    - name: Run tests
+      run: |
+        go test -v -coverprofile="cover-profile.out" -short -race ./...

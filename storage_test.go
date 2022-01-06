@@ -7,6 +7,7 @@ import (
 	"cloud.google.com/go/storage"
 	"github.com/fsouza/fake-gcs-server/fakestorage"
 	"github.com/stretchr/testify/assert"
+	"google.golang.org/api/option"
 )
 
 const (
@@ -16,9 +17,9 @@ const (
 func setupTestStorage(t *testing.T, objects []fakestorage.Object) *Storage {
 	server := fakestorage.NewServer(objects)
 	defer server.Stop()
-	s, err := NewStorage(context.Background(), testBucket)
+	ctx := context.Background()
+	s, err := NewStorage(ctx, testBucket, option.WithHTTPClient(server.HTTPClient()), option.WithoutAuthentication())
 	assert.NoError(t, err)
-	s.bucket = server.Client().Bucket(testBucket)
 	return s
 }
 

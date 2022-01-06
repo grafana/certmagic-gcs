@@ -27,6 +27,19 @@ const (
 	testBucket = "some-bucket"
 )
 
+func testLogger(t *testing.T) *log.Logger {
+	return log.New(testWriter{t}, "test", log.LstdFlags)
+}
+
+type testWriter struct {
+	t *testing.T
+}
+
+func (tw testWriter) Write(p []byte) (n int, err error) {
+	tw.t.Log(string(p))
+	return len(p), nil
+}
+
 func pebbleHandler(t *testing.T) http.Handler {
 	os.Setenv("PEBBLE_VA_ALWAYS_VALID", "1")
 	os.Setenv("PEBBLE_VA_NOSLEEP", "1")
@@ -34,7 +47,7 @@ func pebbleHandler(t *testing.T) http.Handler {
 		os.Unsetenv("PEBBLE_VA_ALWAYS_VALID")
 		os.Unsetenv("PEBBLE_VA_NOSLEEP")
 	})
-	logger := log.New(os.Stdout, "Pebble ", log.LstdFlags)
+	logger := testLogger(t)
 	db := db.NewMemoryStore()
 	ca := ca.New(logger, db, "", 0, 1, 100)
 	va := va.New(logger, 80, 443, false, "")
@@ -59,7 +72,8 @@ func TestGCSStorage(t *testing.T) {
 
 	// Setup cert-magic
 	certmagic.DefaultACME.CA = pebble.URL + "/dir"
-	storage, err := certmagicgcs.NewStorage(context.Background(), testBucket, option.WithHTTPClient(gcs.HTTPClient()))
+	certmagic.DefaultACME.AltTLSALPNPort = 8443
+	storage, err := certmagicgcs.NewStorage(context.Background(), testBucket, option.WithHTTPClient(gcs.HTTPClient()), option.WithoutAuthentication())
 	assert.NoError(t, err)
 
 	certmagic.Default.Storage = storage
@@ -77,6 +91,7 @@ func TestGCSStorage(t *testing.T) {
 	// Configure storage
 	tlsConfig, err := certmagic.TLS([]string{"example.com"})
 	assert.NoError(t, err)
+	tlsConfig.NextProtos = append([]string{"h2", "http/1.1"}, tlsConfig.NextProtos...)
 
 	// Start cert magic
 	s := httptest.NewUnstartedServer(mux)
