@@ -3,10 +3,14 @@ package certmagicgcs
 import (
 	"context"
 	"fmt"
+	"os"
 
 	"github.com/caddyserver/caddy/v2"
 	"github.com/caddyserver/caddy/v2/caddyconfig/caddyfile"
 	"github.com/caddyserver/certmagic"
+	"github.com/google/tink/go/aead"
+	"github.com/google/tink/go/insecurecleartextkeyset"
+	"github.com/google/tink/go/keyset"
 )
 
 // Interface guards
@@ -18,7 +22,9 @@ var (
 // CaddyStorageGCS implements a caddy storage backend for Google Cloud Storage.
 type CaddyStorageGCS struct {
 	// BucketName is the name of the storage bucket.
-	BucketName string `json:"string"`
+	BucketName string `json:"bucket-name"`
+	// EncryptionKeySet is the path of a json tink encryption keyset
+	EncryptionKeySet string `json:"encryption-key-set"`
 }
 
 func init() {
@@ -37,7 +43,32 @@ func (CaddyStorageGCS) CaddyModule() caddy.ModuleInfo {
 
 // CertMagicStorage returns a cert-magic storage.
 func (s *CaddyStorageGCS) CertMagicStorage() (certmagic.Storage, error) {
-	return NewStorage(context.TODO(), s.BucketName)
+	config := StorageConfig{
+		BucketName: s.BucketName,
+	}
+
+	if len(s.EncryptionKeySet) > 0 {
+		f, err := os.Open(s.EncryptionKeySet)
+		if err != nil {
+			return nil, err
+		}
+		defer f.Close()
+
+		r := keyset.NewJSONReader(f)
+		// TODO: Add the ability to read an encrypted keyset / or envelope encryption
+		// see https://github.com/google/tink/blob/e5c9356ed471be08a63eb5ea3ad0e892544e5a1c/go/keyset/handle_test.go#L84-L86
+		// or https://github.com/google/tink/blob/master/docs/GOLANG-HOWTO.md
+		kh, err := insecurecleartextkeyset.Read(r)
+		if err != nil {
+			return nil, err
+		}
+		kp, err := aead.New(kh)
+		if err != nil {
+			return nil, err
+		}
+		config.AEAD = kp
+	}
+	return NewStorage(context.TODO(), config)
 }
 
 // Validate caddy gcs storage configuration.
@@ -60,9 +91,9 @@ func (s *CaddyStorageGCS) UnmarshalCaddyfile(d *caddyfile.Dispenser) error {
 
 		switch key {
 		case "bucket-name":
-			if value != "" {
-				s.BucketName = value
-			}
+			s.BucketName = value
+		case "encryption-key-set":
+			s.EncryptionKeySet = value
 		}
 	}
 	return nil

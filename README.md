@@ -3,10 +3,11 @@
 This library allows you to use Google Cloud Storage as key/certificate storage backend for your [Certmagic](https://github.com/caddyserver/certmagic)-enabled HTTPS server. To protect your keys from unwanted attention, client-side encryption is possible.
 
 
-### Development
+## Usage
 
 In this section, we create an caddy confi using our GCS storage.
 
+### Getting started
 1. Create a `Caddyfile`
 
 ```
@@ -43,4 +44,60 @@ xcaddy run
 
 ```bash
 open https://localhost
+```
+
+### Client Side Encryption
+
+This module supports client side encryption using [google Tink](https://github.com/google/tink), thus providing a simple way to customize the encryption algorithm and handle key rotation. To get started: 
+
+1. Install [tinkey](https://github.com/google/tink/blob/master/docs/TINKEY.md)
+
+2. Create a key set
+
+```
+  tinkey create-keyset --key-template AES128_GCM_RAW --out keyset.json
+```
+
+Here is an example keyset.json
+```json
+{
+  "primaryKeyId": 1818673287,
+  "key": [
+    {
+      "keyData": {
+        "typeUrl": "type.googleapis.com/google.crypto.tink.AesGcmKey",
+        "value": "GhDEQ/4v72esAv3rbwZyS+ls",
+        "keyMaterialType": "SYMMETRIC"
+      },
+      "status": "ENABLED",
+      "keyId": 1818673287,
+      "outputPrefixType": "RAW"
+    }
+  ]
+}
+```
+
+3. Start caddy with the following config
+
+```
+{
+	storage gcs {
+    bucket some-bucket
+    encryption-key-set ./keyset.json
+  }
+}
+localhost
+acme_server
+respond "Hello Caddy Storage GCS!"
+```
+
+```
+# restart the fake gcs backend to start with an empty bucket
+docker restart gcp-storage-emulator
+
+# start caddy
+xcaddy run
+
+# to rotate the key-set
+tinkey rotate-keyset --in keyset.json  --key-template AES128_GCM_RAW
 ```

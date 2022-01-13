@@ -14,6 +14,8 @@ import (
 
 	"github.com/caddyserver/certmagic"
 	"github.com/fsouza/fake-gcs-server/fakestorage"
+	"github.com/google/tink/go/aead"
+	"github.com/google/tink/go/keyset"
 	certmagicgcs "github.com/grafana/certmagic-gcs"
 	"github.com/letsencrypt/pebble/ca"
 	"github.com/letsencrypt/pebble/db"
@@ -73,7 +75,18 @@ func TestGCSStorage(t *testing.T) {
 	// Setup cert-magic
 	certmagic.DefaultACME.CA = pebble.URL + "/dir"
 	certmagic.DefaultACME.AltTLSALPNPort = 8443
-	storage, err := certmagicgcs.NewStorage(context.Background(), testBucket, option.WithHTTPClient(gcs.HTTPClient()), option.WithoutAuthentication())
+	kh, err := keyset.NewHandle(aead.AES256GCMKeyTemplate())
+	assert.NoError(t, err)
+	ks, err := aead.New(kh)
+	assert.NoError(t, err)
+	storage, err := certmagicgcs.NewStorage(context.Background(), certmagicgcs.StorageConfig{
+		BucketName: testBucket,
+		AEAD:       ks,
+		ClientOptions: []option.ClientOption{
+			option.WithHTTPClient(gcs.HTTPClient()),
+			option.WithoutAuthentication(),
+		},
+	})
 	assert.NoError(t, err)
 
 	certmagic.Default.Storage = storage
