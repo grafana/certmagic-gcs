@@ -81,7 +81,7 @@ Here is an example keyset.json
 
 ```
 {
-	storage gcs {
+  storage gcs {
     bucket some-bucket
     encryption-key-set ./keyset.json
   }
