@@ -142,6 +142,8 @@ func TestEncryption(t *testing.T) {
 	defer rc.Close()
 	encrypted, err := ioutil.ReadAll(rc)
 	assert.NoError(t, err)
+	assert.NotEqual(t, string(encrypted), content)
+
 	decrypted, err := s.aead.Decrypt(encrypted, []byte(key))
 	assert.NoError(t, err)
 	assert.Equal(t, string(decrypted), content)
