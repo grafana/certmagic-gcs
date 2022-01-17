@@ -129,7 +129,6 @@ func TestEncryption(t *testing.T) {
 	assert.NoError(t, err)
 
 	s.aead = kp
-	s.aead = &cleartext{}
 	key := "some/object/file.txt"
 	content := "data"
 
