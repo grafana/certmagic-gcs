@@ -8,6 +8,7 @@ import (
 
 	"cloud.google.com/go/storage"
 	"github.com/caddyserver/certmagic"
+	"github.com/google/tink/go/tink"
 	"google.golang.org/api/iterator"
 	"google.golang.org/api/option"
 )
@@ -22,6 +23,7 @@ var (
 // Storage is a certmagic.Storage backed by a GCS bucket
 type Storage struct {
 	bucket *storage.BucketHandle
+	aead   tink.AEAD
 }
 
 // Interface guards
@@ -30,19 +32,39 @@ var (
 	_ certmagic.Locker  = (*Storage)(nil)
 )
 
-func NewStorage(ctx context.Context, bucketName string, opts ...option.ClientOption) (*Storage, error) {
-	client, err := storage.NewClient(ctx, opts...)
+type StorageConfig struct {
+	// BucketName is the name of the GCS storage Bucket
+	BucketName string
+	// ClientOptions GCS storage client options
+	ClientOptions []option.ClientOption
+	// AEAD for Authenticated Encryption with Additional Data
+	AEAD tink.AEAD
+}
+
+func NewStorage(ctx context.Context, config StorageConfig) (*Storage, error) {
+	client, err := storage.NewClient(ctx, config.ClientOptions...)
 	if err != nil {
 		return nil, fmt.Errorf("could not initialize storage client: %w", err)
 	}
-	bucket := client.Bucket(bucketName)
-	return &Storage{bucket: bucket}, nil
+	bucket := client.Bucket(config.BucketName)
+	var kp tink.AEAD
+	if config.AEAD != nil {
+		kp = config.AEAD
+	} else {
+		kp = new(cleartext)
+	}
+	return &Storage{bucket: bucket, aead: kp}, nil
 }
 
 // Store puts value at key.
 func (s *Storage) Store(key string, value []byte) error {
 	w := s.bucket.Object(key).NewWriter(context.TODO())
-	if _, err := w.Write(value); err != nil {
+
+	encrypted, err := s.aead.Encrypt(value, []byte(key))
+	if err != nil {
+		return fmt.Errorf("encrypting object %s: %w", key, err)
+	}
+	if _, err := w.Write(encrypted); err != nil {
 		return fmt.Errorf("writing object %s: %w", key, err)
 	}
 	return w.Close()
@@ -55,7 +77,17 @@ func (s *Storage) Load(key string) ([]byte, error) {
 		return nil, fmt.Errorf("loading object %s: %w", key, err)
 	}
 	defer rc.Close()
-	return ioutil.ReadAll(rc)
+
+	encrypted, err := ioutil.ReadAll(rc)
+	if err != nil {
+		return nil, fmt.Errorf("reading object %s: %w", key, err)
+	}
+
+	decrypted, err := s.aead.Decrypt(encrypted, []byte(key))
+	if err != nil {
+		return nil, fmt.Errorf("decrypting object %s: %w", key, err)
+	}
+	return decrypted, nil
 }
 
 // Delete deletes key. An error should be
@@ -200,4 +232,17 @@ func (s *Storage) Unlock(key string) error {
 
 func (s *Storage) objLockName(key string) string {
 	return key + ".lock"
+}
+
+// cleartext implements tink.AAED interface, but simply store the object in plaintext
+type cleartext struct{}
+
+// encrypt returns the unencrypted plaintext data.
+func (cleartext) Encrypt(plaintext, additionalData []byte) ([]byte, error) {
+	return plaintext, nil
+}
+
+// decrypt returns the ciphertext as plaintext
+func (cleartext) Decrypt(ciphertext, additionalData []byte) ([]byte, error) {
+	return ciphertext, nil
 }
