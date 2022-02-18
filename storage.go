@@ -2,7 +2,9 @@ package certmagicgcs
 
 import (
 	"context"
+	"errors"
 	"fmt"
+	"io/fs"
 	"io/ioutil"
 	"time"
 
@@ -73,6 +75,9 @@ func (s *Storage) Store(key string, value []byte) error {
 // Load retrieves the value at key.
 func (s *Storage) Load(key string) ([]byte, error) {
 	rc, err := s.bucket.Object(key).NewReader(context.TODO())
+	if errors.Is(err, storage.ErrObjectNotExist) {
+		return nil, fs.ErrNotExist
+	}
 	if err != nil {
 		return nil, fmt.Errorf("loading object %s: %w", key, err)
 	}
@@ -94,7 +99,11 @@ func (s *Storage) Load(key string) ([]byte, error) {
 // returned only if the key still exists
 // when the method returns.
 func (s *Storage) Delete(key string) error {
-	if err := s.bucket.Object(key).Delete(context.TODO()); err != nil {
+	err := s.bucket.Object(key).Delete(context.TODO())
+	if errors.Is(err, storage.ErrObjectNotExist) {
+		return fs.ErrNotExist
+	}
+	if err != nil {
 		return fmt.Errorf("deleting object %s: %w", key, err)
 	}
 	return nil
@@ -138,6 +147,9 @@ func (s *Storage) List(prefix string, recursive bool) ([]string, error) {
 func (s *Storage) Stat(key string) (certmagic.KeyInfo, error) {
 	var keyInfo certmagic.KeyInfo
 	attr, err := s.bucket.Object(key).Attrs(context.TODO())
+	if errors.Is(err, storage.ErrObjectNotExist) {
+		return keyInfo, fs.ErrNotExist
+	}
 	if err != nil {
 		return keyInfo, fmt.Errorf("loading attributes for %s: %w", key, err)
 	}

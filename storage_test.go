@@ -2,6 +2,7 @@ package certmagicgcs
 
 import (
 	"context"
+	"io/fs"
 	"io/ioutil"
 	"testing"
 
@@ -152,4 +153,22 @@ func TestEncryption(t *testing.T) {
 	out, err := s.Load(key)
 	assert.NoError(t, err)
 	assert.Equal(t, content, string(out))
+}
+
+func TestErrNotExist(t *testing.T) {
+	s := setupTestStorage(t, []fakestorage.Object{
+		{
+			ObjectAttrs: fakestorage.ObjectAttrs{
+				BucketName: testBucket,
+				Name:       "some/object/",
+			},
+		},
+	})
+	key := "does/not/exists"
+	_, err := s.Load(key)
+	assert.ErrorIs(t, err, fs.ErrNotExist)
+	err = s.Delete(key)
+	assert.ErrorIs(t, err, fs.ErrNotExist)
+	_, err = s.Stat(key)
+	assert.ErrorIs(t, err, fs.ErrNotExist)
 }
