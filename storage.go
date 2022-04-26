@@ -59,8 +59,8 @@ func NewStorage(ctx context.Context, config StorageConfig) (*Storage, error) {
 }
 
 // Store puts value at key.
-func (s *Storage) Store(key string, value []byte) error {
-	w := s.bucket.Object(key).NewWriter(context.TODO())
+func (s *Storage) Store(ctx context.Context, key string, value []byte) error {
+	w := s.bucket.Object(key).NewWriter(ctx)
 
 	encrypted, err := s.aead.Encrypt(value, []byte(key))
 	if err != nil {
@@ -73,8 +73,8 @@ func (s *Storage) Store(key string, value []byte) error {
 }
 
 // Load retrieves the value at key.
-func (s *Storage) Load(key string) ([]byte, error) {
-	rc, err := s.bucket.Object(key).NewReader(context.TODO())
+func (s *Storage) Load(ctx context.Context, key string) ([]byte, error) {
+	rc, err := s.bucket.Object(key).NewReader(ctx)
 	if errors.Is(err, storage.ErrObjectNotExist) {
 		return nil, fs.ErrNotExist
 	}
@@ -98,8 +98,8 @@ func (s *Storage) Load(key string) ([]byte, error) {
 // Delete deletes key. An error should be
 // returned only if the key still exists
 // when the method returns.
-func (s *Storage) Delete(key string) error {
-	err := s.bucket.Object(key).Delete(context.TODO())
+func (s *Storage) Delete(ctx context.Context, key string) error {
+	err := s.bucket.Object(key).Delete(ctx)
 	if errors.Is(err, storage.ErrObjectNotExist) {
 		return fs.ErrNotExist
 	}
@@ -111,8 +111,8 @@ func (s *Storage) Delete(key string) error {
 
 // Exists returns true if the key exists
 // and there was no error checking.
-func (s *Storage) Exists(key string) bool {
-	_, err := s.bucket.Object(key).Attrs(context.TODO())
+func (s *Storage) Exists(ctx context.Context, key string) bool {
+	_, err := s.bucket.Object(key).Attrs(ctx)
 	return err != storage.ErrObjectNotExist
 }
 
@@ -121,13 +121,13 @@ func (s *Storage) Exists(key string) bool {
 // will be enumerated (i.e. "directories"
 // should be walked); otherwise, only keys
 // prefixed exactly by prefix will be listed.
-func (s *Storage) List(prefix string, recursive bool) ([]string, error) {
+func (s *Storage) List(ctx context.Context, prefix string, recursive bool) ([]string, error) {
 	query := &storage.Query{Prefix: prefix}
 	if !recursive {
 		query.Delimiter = "/"
 	}
 	var names []string
-	it := s.bucket.Objects(context.TODO(), query)
+	it := s.bucket.Objects(ctx, query)
 	for {
 		attrs, err := it.Next()
 		if err == iterator.Done {
@@ -144,9 +144,9 @@ func (s *Storage) List(prefix string, recursive bool) ([]string, error) {
 }
 
 // Stat returns information about key.
-func (s *Storage) Stat(key string) (certmagic.KeyInfo, error) {
+func (s *Storage) Stat(ctx context.Context, key string) (certmagic.KeyInfo, error) {
 	var keyInfo certmagic.KeyInfo
-	attr, err := s.bucket.Object(key).Attrs(context.TODO())
+	attr, err := s.bucket.Object(key).Attrs(ctx)
 	if errors.Is(err, storage.ErrObjectNotExist) {
 		return keyInfo, fs.ErrNotExist
 	}
@@ -207,7 +207,7 @@ func (s *Storage) Lock(ctx context.Context, key string) error {
 		}
 		// Unlock if the lock expired
 		if attrs.Updated.Add(LockExpiration).Before(time.Now().UTC()) {
-			if err := s.Unlock(key); err != nil {
+			if err := s.Unlock(ctx, key); err != nil {
 				return fmt.Errorf("unlocking expired lock %s: %w", lockKey, err)
 			}
 			continue
@@ -226,17 +226,17 @@ func (s *Storage) Lock(ctx context.Context, key string) error {
 // called after a successful call to Lock, and only after the
 // critical section is finished, even if it errored or timed
 // out. Unlock cleans up any resources allocated during Lock.
-func (s *Storage) Unlock(key string) error {
+func (s *Storage) Unlock(ctx context.Context, key string) error {
 	lockKey := s.objLockName(key)
 	obj := s.bucket.Object(lockKey)
-	_, err := obj.Update(context.TODO(), storage.ObjectAttrsToUpdate{TemporaryHold: false})
+	_, err := obj.Update(ctx, storage.ObjectAttrsToUpdate{TemporaryHold: false})
 	if err == storage.ErrObjectNotExist {
 		return nil
 	}
 	if err != nil {
 		return fmt.Errorf("could not remove temporary hold for %s: %w", lockKey, err)
 	}
-	if err := s.Delete(s.objLockName(key)); err != nil {
+	if err := s.Delete(ctx, s.objLockName(key)); err != nil {
 		return fmt.Errorf("delting lock %s: %w", lockKey, err)
 	}
 	return nil

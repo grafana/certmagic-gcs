@@ -68,7 +68,7 @@ func (s *CaddyStorageGCS) CertMagicStorage() (certmagic.Storage, error) {
 		}
 		config.AEAD = kp
 	}
-	return NewStorage(context.TODO(), config)
+	return NewStorage(context.Background(), config)
 }
 
 // Validate caddy gcs storage configuration.
