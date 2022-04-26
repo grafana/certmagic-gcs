@@ -44,52 +44,56 @@ func TestSimpleOperations(t *testing.T) {
 	key := "some/object/file.txt"
 	content := "data"
 
+	ctx := context.Background()
+
 	// Exists
-	assert.False(t, s.Exists(key))
+	assert.False(t, s.Exists(ctx, key))
 
 	// Create
-	err := s.Store(key, []byte(content))
+	err := s.Store(ctx, key, []byte(content))
 	assert.NoError(t, err)
 
-	assert.True(t, s.Exists(key))
+	assert.True(t, s.Exists(ctx, key))
 
-	out, err := s.Load(key)
+	out, err := s.Load(ctx, key)
 	assert.NoError(t, err)
 	assert.Equal(t, content, string(out))
 
 	// Stat
-	stat, err := s.Stat(key)
+	stat, err := s.Stat(ctx, key)
 	assert.NoError(t, err)
 	assert.Equal(t, key, stat.Key)
 	assert.EqualValues(t, len(content), stat.Size)
 	assert.True(t, stat.IsTerminal)
 
 	// Delete
-	err = s.Delete(key)
+	err = s.Delete(ctx, key)
 	assert.NoError(t, err)
-	assert.False(t, s.Exists(key))
+	assert.False(t, s.Exists(ctx, key))
 }
 
 func TestDeleteOnlyIfKeyStillExists(t *testing.T) {
+	ctx := context.Background()
 	s := setupTestStorage(t, []fakestorage.Object{
 		{ObjectAttrs: fakestorage.ObjectAttrs{BucketName: testBucket, Name: "/a/b/1.txt"}},
 	})
-	err := s.Delete("/does/not/exists")
+	err := s.Delete(ctx, "/does/not/exists")
 	assert.ErrorAs(t, err, &storage.ErrObjectNotExist)
 }
 
 func TestList(t *testing.T) {
+	ctx := context.Background()
 	s := setupTestStorage(t, []fakestorage.Object{
 		{ObjectAttrs: fakestorage.ObjectAttrs{BucketName: testBucket, Name: "/a/b/1.txt"}},
 		{ObjectAttrs: fakestorage.ObjectAttrs{BucketName: testBucket, Name: "/a/b/c1/2.txt"}},
 		{ObjectAttrs: fakestorage.ObjectAttrs{BucketName: testBucket, Name: "/a/b/c1/3.txt"}},
 		{ObjectAttrs: fakestorage.ObjectAttrs{BucketName: testBucket, Name: "/a/b/c2/d/4.txt"}},
 	})
-	res, err := s.List("/a/b/", false)
+	res, err := s.List(ctx, "/a/b/", false)
 	assert.NoError(t, err)
 	assert.Equal(t, []string{"/a/b/1.txt"}, res)
 
-	res, err = s.List("/a/b/c1/", true)
+	res, err = s.List(ctx, "/a/b/c1/", true)
 	assert.NoError(t, err)
 	assert.Equal(t, []string{"/a/b/c1/2.txt", "/a/b/c1/3.txt"}, res)
 }
@@ -106,16 +110,18 @@ func TestLock(t *testing.T) {
 }
 
 func TestUnlock(t *testing.T) {
+	ctx := context.Background()
 	s := setupTestStorage(t, []fakestorage.Object{
 		{ObjectAttrs: fakestorage.ObjectAttrs{BucketName: testBucket, Name: "/a.lock"}},
 	})
-	err := s.Unlock("a")
+	err := s.Unlock(ctx, "a")
 	assert.NoError(t, err)
-	_, err = s.bucket.Object("a.lock").Attrs(context.Background())
+	_, err = s.bucket.Object("a.lock").Attrs(ctx)
 	assert.ErrorAs(t, err, &storage.ErrObjectNotExist)
 }
 
 func TestEncryption(t *testing.T) {
+	ctx := context.Background()
 	s := setupTestStorage(t, []fakestorage.Object{
 		{
 			ObjectAttrs: fakestorage.ObjectAttrs{
@@ -134,11 +140,11 @@ func TestEncryption(t *testing.T) {
 	content := "data"
 
 	// store encrypted data
-	err = s.Store(key, []byte(content))
+	err = s.Store(ctx, key, []byte(content))
 	assert.NoError(t, err)
 
 	// ensure the object is encrypted in storage
-	rc, err := s.bucket.Object(key).NewReader(context.TODO())
+	rc, err := s.bucket.Object(key).NewReader(ctx)
 	assert.NoError(t, err)
 	defer rc.Close()
 	encrypted, err := ioutil.ReadAll(rc)
@@ -150,12 +156,13 @@ func TestEncryption(t *testing.T) {
 	assert.Equal(t, string(decrypted), content)
 
 	// ensure load decrypts the object
-	out, err := s.Load(key)
+	out, err := s.Load(ctx, key)
 	assert.NoError(t, err)
 	assert.Equal(t, content, string(out))
 }
 
 func TestErrNotExist(t *testing.T) {
+	ctx := context.Background()
 	s := setupTestStorage(t, []fakestorage.Object{
 		{
 			ObjectAttrs: fakestorage.ObjectAttrs{
@@ -165,10 +172,10 @@ func TestErrNotExist(t *testing.T) {
 		},
 	})
 	key := "does/not/exists"
-	_, err := s.Load(key)
+	_, err := s.Load(ctx, key)
 	assert.ErrorIs(t, err, fs.ErrNotExist)
-	err = s.Delete(key)
+	err = s.Delete(ctx, key)
 	assert.ErrorIs(t, err, fs.ErrNotExist)
-	_, err = s.Stat(key)
+	_, err = s.Stat(ctx, key)
 	assert.ErrorIs(t, err, fs.ErrNotExist)
 }
