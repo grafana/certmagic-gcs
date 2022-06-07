@@ -9,7 +9,7 @@ require (
 	github.com/fsouza/fake-gcs-server v1.38.1
 	github.com/google/tink/go v1.6.1
 	github.com/letsencrypt/pebble v1.0.2-0.20211028190950-4cce110cac5a
-	github.com/stretchr/testify v1.7.1
+	github.com/stretchr/testify v1.7.2
 	google.golang.org/api v0.82.0
 )
 
@@ -73,5 +73,5 @@ require (
 	google.golang.org/protobuf v1.28.0 // indirect
 	gopkg.in/square/go-jose.v2 v2.6.0 // indirect
 	gopkg.in/tomb.v1 v1.0.0-20141024135613-dd632973f1e7 // indirect
-	gopkg.in/yaml.v3 v3.0.0 // indirect
+	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
