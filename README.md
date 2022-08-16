@@ -12,8 +12,8 @@ In this section, we create an caddy confi using our GCS storage.
 
 ```
 {
-	storage gcs {
-    bucket some-bucket
+  storage gcs {
+    bucket-name some-bucket
   }
 }
 localhost
