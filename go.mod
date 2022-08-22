@@ -5,7 +5,7 @@ go 1.17
 require (
 	cloud.google.com/go/storage v1.25.0
 	github.com/caddyserver/caddy/v2 v2.5.2
-	github.com/caddyserver/certmagic v0.16.2
+	github.com/caddyserver/certmagic v0.16.3
 	github.com/fsouza/fake-gcs-server v1.38.4
 	github.com/google/tink/go v1.7.0
 	github.com/letsencrypt/pebble v1.0.2-0.20211028190950-4cce110cac5a
@@ -33,7 +33,7 @@ require (
 	github.com/googleapis/gax-go/v2 v2.4.0 // indirect
 	github.com/gorilla/handlers v1.5.1 // indirect
 	github.com/gorilla/mux v1.8.0 // indirect
-	github.com/klauspost/cpuid/v2 v2.0.13 // indirect
+	github.com/klauspost/cpuid/v2 v2.1.0 // indirect
 	github.com/letsencrypt/challtestsrv v1.2.1 // indirect
 	github.com/libdns/libdns v0.2.1 // indirect
 	github.com/lucas-clemente/quic-go v0.28.0 // indirect
@@ -44,7 +44,7 @@ require (
 	github.com/marten-seemann/qtls-go1-19 v0.1.0-beta.1 // indirect
 	github.com/matttproud/golang_protobuf_extensions v1.0.1 // indirect
 	github.com/mholt/acmez v1.0.4 // indirect
-	github.com/miekg/dns v1.1.46 // indirect
+	github.com/miekg/dns v1.1.50 // indirect
 	github.com/nxadm/tail v1.4.8 // indirect
 	github.com/onsi/ginkgo v1.16.4 // indirect
 	github.com/pkg/xattr v0.4.8 // indirect
@@ -58,12 +58,12 @@ require (
 	go.uber.org/atomic v1.9.0 // indirect
 	go.uber.org/multierr v1.6.0 // indirect
 	go.uber.org/zap v1.21.0 // indirect
-	golang.org/x/crypto v0.0.0-20220214200702-86341886e292 // indirect
+	golang.org/x/crypto v0.0.0-20220722155217-630584e8d5aa // indirect
 	golang.org/x/mod v0.4.2 // indirect
-	golang.org/x/net v0.0.0-20220630215102-69896b714898 // indirect
+	golang.org/x/net v0.0.0-20220805013720-a33c5aa5df48 // indirect
 	golang.org/x/oauth2 v0.0.0-20220622183110-fd043fe589d2 // indirect
 	golang.org/x/sync v0.0.0-20220601150217-0de741cfad7f // indirect
-	golang.org/x/sys v0.0.0-20220715151400-c0bba94af5f8 // indirect
+	golang.org/x/sys v0.0.0-20220728004956-3c1f35247d10 // indirect
 	golang.org/x/term v0.0.0-20210927222741-03fcf44c2211 // indirect
 	golang.org/x/text v0.3.8-0.20211004125949-5bd84dd9b33b // indirect
 	golang.org/x/tools v0.1.7 // indirect
