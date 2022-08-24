@@ -10,7 +10,7 @@ require (
 	github.com/google/tink/go v1.7.0
 	github.com/letsencrypt/pebble v1.0.2-0.20211028190950-4cce110cac5a
 	github.com/stretchr/testify v1.8.0
-	google.golang.org/api v0.93.0
+	google.golang.org/api v0.94.0
 )
 
 require (
@@ -61,7 +61,7 @@ require (
 	golang.org/x/crypto v0.0.0-20220722155217-630584e8d5aa // indirect
 	golang.org/x/mod v0.4.2 // indirect
 	golang.org/x/net v0.0.0-20220805013720-a33c5aa5df48 // indirect
-	golang.org/x/oauth2 v0.0.0-20220622183110-fd043fe589d2 // indirect
+	golang.org/x/oauth2 v0.0.0-20220822191816-0ebed06d0094 // indirect
 	golang.org/x/sync v0.0.0-20220601150217-0de741cfad7f // indirect
 	golang.org/x/sys v0.0.0-20220728004956-3c1f35247d10 // indirect
 	golang.org/x/term v0.0.0-20210927222741-03fcf44c2211 // indirect
