@@ -5,7 +5,7 @@ go 1.17
 require (
 	cloud.google.com/go/storage v1.26.0
 	github.com/caddyserver/caddy/v2 v2.5.2
-	github.com/caddyserver/certmagic v0.17.0
+	github.com/caddyserver/certmagic v0.17.1
 	github.com/fsouza/fake-gcs-server v1.39.0
 	github.com/google/tink/go v1.7.0
 	github.com/letsencrypt/pebble v1.0.2-0.20211028190950-4cce110cac5a
