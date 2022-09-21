@@ -5,7 +5,7 @@ import (
 	"crypto/tls"
 	"crypto/x509"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"log"
 	"net/http"
 	"net/http/httptest"
@@ -56,7 +56,10 @@ func pebbleHandler(t *testing.T) http.Handler {
 	wfeImpl := wfe.New(logger, db, va, ca, false, false)
 	return wfeImpl.Handler()
 }
+
 func TestGCSStorage(t *testing.T) {
+	ctx := context.Background()
+
 	// start gcs fake server
 	gcs := fakestorage.NewServer([]fakestorage.Object{
 		{
@@ -111,13 +114,17 @@ func TestGCSStorage(t *testing.T) {
 	s.TLS = tlsConfig
 	s.StartTLS()
 	defer s.Close()
-	http.DefaultTransport.(*http.Transport).TLSClientConfig = &tls.Config{InsecureSkipVerify: true}
+	http.DefaultTransport.(*http.Transport).TLSClientConfig = &tls.Config{
+		//nolint:gosec
+		InsecureSkipVerify: true,
+	}
 
 	// Test request
-	res, err := http.Get(s.URL)
+	req, _ := http.NewRequestWithContext(ctx, http.MethodGet, s.URL, nil)
+	res, err := http.DefaultClient.Do(req)
 	assert.NoError(t, err)
 	defer res.Body.Close()
-	body, err := ioutil.ReadAll(res.Body)
+	body, err := io.ReadAll(res.Body)
 	assert.NoError(t, err)
 	assert.NoError(t, err)
 	assert.Equal(t, "Ok", string(body))

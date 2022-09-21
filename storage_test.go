@@ -2,8 +2,8 @@ package certmagicgcs
 
 import (
 	"context"
+	"io"
 	"io/fs"
-	"io/ioutil"
 	"testing"
 
 	"cloud.google.com/go/storage"
@@ -147,7 +147,7 @@ func TestEncryption(t *testing.T) {
 	rc, err := s.bucket.Object(key).NewReader(ctx)
 	assert.NoError(t, err)
 	defer rc.Close()
-	encrypted, err := ioutil.ReadAll(rc)
+	encrypted, err := io.ReadAll(rc)
 	assert.NoError(t, err)
 	assert.NotEqual(t, string(encrypted), content)
 

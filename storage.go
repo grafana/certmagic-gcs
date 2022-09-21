@@ -4,8 +4,8 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"io"
 	"io/fs"
-	"io/ioutil"
 	"time"
 
 	"cloud.google.com/go/storage"
@@ -35,12 +35,12 @@ var (
 )
 
 type StorageConfig struct {
+	// AEAD for Authenticated Encryption with Additional Data
+	AEAD tink.AEAD
 	// BucketName is the name of the GCS storage Bucket
 	BucketName string
 	// ClientOptions GCS storage client options
 	ClientOptions []option.ClientOption
-	// AEAD for Authenticated Encryption with Additional Data
-	AEAD tink.AEAD
 }
 
 func NewStorage(ctx context.Context, config StorageConfig) (*Storage, error) {
@@ -83,7 +83,7 @@ func (s *Storage) Load(ctx context.Context, key string) ([]byte, error) {
 	}
 	defer rc.Close()
 
-	encrypted, err := ioutil.ReadAll(rc)
+	encrypted, err := io.ReadAll(rc)
 	if err != nil {
 		return nil, fmt.Errorf("reading object %s: %w", key, err)
 	}
@@ -188,10 +188,10 @@ func (s *Storage) Lock(ctx context.Context, key string) error {
 		// create the lock if it doesn't exists
 		if err == storage.ErrObjectNotExist {
 			w := obj.NewWriter(ctx)
-			if _, err := w.Write([]byte{}); err != nil {
+			if _, err = w.Write([]byte{}); err != nil {
 				return fmt.Errorf("creating %s: %w", lockKey, err)
 			}
-			if err := w.Close(); err != nil {
+			if err = w.Close(); err != nil {
 				return fmt.Errorf("closing %s: %w", lockKey, err)
 			}
 			continue
