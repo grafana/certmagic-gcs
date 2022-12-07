@@ -2,7 +2,6 @@
 
 This library allows you to use Google Cloud Storage as key/certificate storage backend for your [Certmagic](https://github.com/caddyserver/certmagic)-enabled HTTPS server. To protect your keys from unwanted attention, client-side encryption is possible.
 
-
 ## Usage
 
 In this section, we create an caddy confi using our GCS storage.
@@ -101,3 +100,7 @@ xcaddy run
 # to rotate the key-set
 tinkey rotate-keyset --in keyset.json  --key-template AES128_GCM_RAW
 ```
+
+## License
+
+This module is distributed under [AGPL-3.0-only](LICENSE).
