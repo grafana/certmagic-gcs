@@ -6,11 +6,11 @@ require (
 	cloud.google.com/go/storage v1.28.1
 	github.com/caddyserver/caddy/v2 v2.6.2
 	github.com/caddyserver/certmagic v0.17.2
-	github.com/fsouza/fake-gcs-server v1.42.2
+	github.com/fsouza/fake-gcs-server v1.43.0
 	github.com/google/tink/go v1.7.0
 	github.com/letsencrypt/pebble v1.0.2-0.20211028190950-4cce110cac5a
 	github.com/stretchr/testify v1.8.1
-	google.golang.org/api v0.104.0
+	google.golang.org/api v0.105.0
 )
 
 require (
@@ -18,7 +18,7 @@ require (
 	cloud.google.com/go/compute v1.13.0 // indirect
 	cloud.google.com/go/compute/metadata v0.2.2 // indirect
 	cloud.google.com/go/iam v0.8.0 // indirect
-	cloud.google.com/go/pubsub v1.27.1 // indirect
+	cloud.google.com/go/pubsub v1.28.0 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/cespare/xxhash/v2 v2.1.2 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
@@ -61,11 +61,11 @@ require (
 	golang.org/x/crypto v0.0.0-20220722155217-630584e8d5aa // indirect
 	golang.org/x/exp v0.0.0-20220722155223-a9213eeb770e // indirect
 	golang.org/x/mod v0.6.0-dev.0.20220419223038-86c51ed26bb4 // indirect
-	golang.org/x/net v0.0.0-20221014081412-f15817d10f9b // indirect
+	golang.org/x/net v0.1.0 // indirect
 	golang.org/x/oauth2 v0.0.0-20221014153046-6fdb5e3db783 // indirect
 	golang.org/x/sync v0.1.0 // indirect
-	golang.org/x/sys v0.0.0-20220728004956-3c1f35247d10 // indirect
-	golang.org/x/term v0.0.0-20210927222741-03fcf44c2211 // indirect
+	golang.org/x/sys v0.1.0 // indirect
+	golang.org/x/term v0.1.0 // indirect
 	golang.org/x/text v0.5.0 // indirect
 	golang.org/x/tools v0.1.12 // indirect
 	golang.org/x/xerrors v0.0.0-20220907171357-04be3eba64a2 // indirect
