@@ -9,7 +9,6 @@ import (
 	"log"
 	"net/http"
 	"net/http/httptest"
-	"os"
 	"testing"
 
 	"github.com/caddyserver/certmagic"
@@ -17,11 +16,12 @@ import (
 	"github.com/google/tink/go/aead"
 	"github.com/google/tink/go/keyset"
 	certmagicgcs "github.com/grafana/certmagic-gcs"
-	"github.com/letsencrypt/pebble/ca"
-	"github.com/letsencrypt/pebble/db"
-	"github.com/letsencrypt/pebble/va"
-	"github.com/letsencrypt/pebble/wfe"
+	"github.com/letsencrypt/pebble/v2/ca"
+	"github.com/letsencrypt/pebble/v2/db"
+	"github.com/letsencrypt/pebble/v2/va"
+	"github.com/letsencrypt/pebble/v2/wfe"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 	"google.golang.org/api/option"
 )
 
@@ -43,12 +43,10 @@ func (tw testWriter) Write(p []byte) (n int, err error) {
 }
 
 func pebbleHandler(t *testing.T) http.Handler {
-	os.Setenv("PEBBLE_VA_ALWAYS_VALID", "1")
-	os.Setenv("PEBBLE_VA_NOSLEEP", "1")
-	t.Cleanup(func() {
-		os.Unsetenv("PEBBLE_VA_ALWAYS_VALID")
-		os.Unsetenv("PEBBLE_VA_NOSLEEP")
-	})
+	t.Helper()
+	t.Setenv("PEBBLE_VA_ALWAYS_VALID", "1")
+	t.Setenv("PEBBLE_VA_NOSLEEP", "1")
+
 	logger := testLogger(t)
 	db := db.NewMemoryStore()
 	ca := ca.New(logger, db, "", 0, 1, 100)
@@ -61,14 +59,18 @@ func TestGCSStorage(t *testing.T) {
 	ctx := context.Background()
 
 	// start gcs fake server
-	gcs := fakestorage.NewServer([]fakestorage.Object{
-		{
-			ObjectAttrs: fakestorage.ObjectAttrs{
-				BucketName: testBucket,
-				Name:       "some/object/",
+	gcs, err := fakestorage.NewServerWithOptions(fakestorage.Options{
+		InitialObjects: []fakestorage.Object{
+			{
+				ObjectAttrs: fakestorage.ObjectAttrs{
+					BucketName: testBucket,
+					Name:       "some/object/",
+				},
 			},
 		},
+		NoListener: true,
 	})
+	require.NoError(t, err)
 	defer gcs.Stop()
 
 	// start let's encrypt
@@ -97,6 +99,8 @@ func TestGCSStorage(t *testing.T) {
 	pool := x509.NewCertPool()
 	pool.AddCert(pebble.Certificate())
 	certmagic.DefaultACME.TrustedRoots = pool
+
+	certmagic.DefaultACME.ListenHost = "127.0.0.1"
 
 	// Create a test handler
 	mux := http.NewServeMux()
