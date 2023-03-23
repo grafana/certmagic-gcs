@@ -250,11 +250,11 @@ func (s *Storage) objLockName(key string) string {
 type cleartext struct{}
 
 // encrypt returns the unencrypted plaintext data.
-func (cleartext) Encrypt(plaintext, additionalData []byte) ([]byte, error) {
+func (cleartext) Encrypt(plaintext, _ []byte) ([]byte, error) {
 	return plaintext, nil
 }
 
 // decrypt returns the ciphertext as plaintext
-func (cleartext) Decrypt(ciphertext, additionalData []byte) ([]byte, error) {
+func (cleartext) Decrypt(ciphertext, _ []byte) ([]byte, error) {
 	return ciphertext, nil
 }
