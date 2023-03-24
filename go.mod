@@ -3,10 +3,10 @@ module github.com/grafana/certmagic-gcs
 go 1.18
 
 require (
-	cloud.google.com/go/storage v1.29.0
+	cloud.google.com/go/storage v1.30.0
 	github.com/caddyserver/caddy/v2 v2.6.4
 	github.com/caddyserver/certmagic v0.17.2
-	github.com/fsouza/fake-gcs-server v1.44.0
+	github.com/fsouza/fake-gcs-server v1.44.1
 	github.com/google/tink/go v1.7.0
 	github.com/letsencrypt/pebble/v2 v2.4.0
 	github.com/stretchr/testify v1.8.2
@@ -18,7 +18,7 @@ require (
 	cloud.google.com/go/compute v1.18.0 // indirect
 	cloud.google.com/go/compute/metadata v0.2.3 // indirect
 	cloud.google.com/go/iam v0.12.0 // indirect
-	cloud.google.com/go/pubsub v1.28.0 // indirect
+	cloud.google.com/go/pubsub v1.29.0 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/cespare/xxhash/v2 v2.2.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
