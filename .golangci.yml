@@ -23,7 +23,6 @@ linters:
   enable:
     - asciicheck
     - bodyclose
-    # - depguard
     - dupl
     - errcheck
     - exhaustive
