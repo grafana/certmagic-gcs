@@ -5,7 +5,7 @@ go 1.19
 require (
 	cloud.google.com/go/storage v1.31.0
 	github.com/caddyserver/caddy/v2 v2.6.4
-	github.com/caddyserver/certmagic v0.18.2
+	github.com/caddyserver/certmagic v0.19.0
 	github.com/fsouza/fake-gcs-server v1.45.2
 	github.com/google/tink/go v1.7.0
 	github.com/letsencrypt/pebble/v2 v2.4.0
@@ -56,6 +56,7 @@ require (
 	github.com/quic-go/qtls-go1-20 v0.1.1 // indirect
 	github.com/quic-go/quic-go v0.32.0 // indirect
 	github.com/sirupsen/logrus v1.9.2 // indirect
+	github.com/zeebo/blake3 v0.2.3 // indirect
 	go.opencensus.io v0.24.0 // indirect
 	go.uber.org/atomic v1.11.0 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
