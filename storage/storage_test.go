@@ -1,4 +1,4 @@
-package certmagicgcs
+package storage
 
 import (
 	"context"

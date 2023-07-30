@@ -15,7 +15,7 @@ import (
 	"github.com/fsouza/fake-gcs-server/fakestorage"
 	"github.com/google/tink/go/aead"
 	"github.com/google/tink/go/keyset"
-	certmagicgcs "github.com/grafana/certmagic-gcs"
+	certmagicgcs "github.com/grafana/certmagic-gcs/storage"
 	"github.com/letsencrypt/pebble/v2/ca"
 	"github.com/letsencrypt/pebble/v2/db"
 	"github.com/letsencrypt/pebble/v2/va"
