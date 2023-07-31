@@ -11,7 +11,7 @@ import (
 	"github.com/google/tink/go/aead"
 	"github.com/google/tink/go/insecurecleartextkeyset"
 	"github.com/google/tink/go/keyset"
-	certmagicgcs "github.com/grafana/certmagic-gcs/storage"
+	"github.com/grafana/certmagic-gcs/storage"
 )
 
 // Interface guards
@@ -44,7 +44,7 @@ func (CaddyStorageGCS) CaddyModule() caddy.ModuleInfo {
 
 // CertMagicStorage returns a cert-magic storage.
 func (s *CaddyStorageGCS) CertMagicStorage() (certmagic.Storage, error) {
-	config := certmagicgcs.StorageConfig{
+	config := storage.StorageConfig{
 		BucketName: s.BucketName,
 	}
 
@@ -69,7 +69,7 @@ func (s *CaddyStorageGCS) CertMagicStorage() (certmagic.Storage, error) {
 		}
 		config.AEAD = kp
 	}
-	return certmagicgcs.NewStorage(context.Background(), config)
+	return storage.NewStorage(context.Background(), config)
 }
 
 // Validate caddy gcs storage configuration.
