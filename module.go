@@ -44,7 +44,7 @@ func (CaddyStorageGCS) CaddyModule() caddy.ModuleInfo {
 
 // CertMagicStorage returns a cert-magic storage.
 func (s *CaddyStorageGCS) CertMagicStorage() (certmagic.Storage, error) {
-	config := storage.StorageConfig{
+	config := storage.Config{
 		BucketName: s.BucketName,
 	}
 
