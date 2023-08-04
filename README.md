@@ -4,9 +4,12 @@ This library allows you to use Google Cloud Storage as key/certificate storage b
 
 ## Usage
 
-In this section, we create an caddy confi using our GCS storage.
+### Caddy
 
-### Getting started
+In this section, we create a caddy config using our GCS storage.
+
+#### Getting started
+
 1. Create a `Caddyfile`
     ```
     {
@@ -83,6 +86,33 @@ This module supports client side encryption using [google Tink](https://github.c
     $ # to rotate the key-set
     $ tinkey rotate-keyset --in keyset.json  --key-template AES128_GCM_RAW
     ```
+
+### CertMagic
+
+1. Add the package:
+
+```console
+go get github.com/grafana/certmagic-gcs
+```
+
+2. Create a `certmagicgcs.NewStorage` with a `certmagicgcs.StorageConfig`:
+
+```golang
+import certmagicgcs "github.com/grafana/certmagic-gcs/storage"
+
+bucket := "my-example-bucket"
+
+gcs, _ := certmagicgcs.NewStorage(
+  context.Background(), 
+  &certmagicgcs.StorageConfig{BucketName: bucket}
+)
+```
+
+3. Optionally, [register as default storage](https://github.com/caddyserver/certmagic#storage).
+
+```golang
+certmagic.Default.Storage = gcs
+```
 
 ## License
 

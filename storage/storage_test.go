@@ -1,4 +1,4 @@
-package certmagicgcs
+package storage
 
 import (
 	"context"
@@ -21,7 +21,7 @@ const (
 func setupTestStorage(t *testing.T, objects []fakestorage.Object) *Storage {
 	server := fakestorage.NewServer(objects)
 	defer server.Stop()
-	s, err := NewStorage(context.Background(), StorageConfig{
+	s, err := NewStorage(context.Background(), Config{
 		BucketName: testBucket,
 		ClientOptions: []option.ClientOption{
 			option.WithHTTPClient(server.HTTPClient()),

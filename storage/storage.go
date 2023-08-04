@@ -1,4 +1,4 @@
-package certmagicgcs
+package storage
 
 import (
 	"context"
@@ -34,7 +34,7 @@ var (
 	_ certmagic.Locker  = (*Storage)(nil)
 )
 
-type StorageConfig struct {
+type Config struct {
 	// AEAD for Authenticated Encryption with Additional Data
 	AEAD tink.AEAD
 	// BucketName is the name of the GCS storage Bucket
@@ -43,7 +43,7 @@ type StorageConfig struct {
 	ClientOptions []option.ClientOption
 }
 
-func NewStorage(ctx context.Context, config StorageConfig) (*Storage, error) {
+func NewStorage(ctx context.Context, config Config) (*Storage, error) {
 	client, err := storage.NewClient(ctx, config.ClientOptions...)
 	if err != nil {
 		return nil, fmt.Errorf("could not initialize storage client: %w", err)

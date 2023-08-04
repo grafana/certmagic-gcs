@@ -15,7 +15,7 @@ import (
 	"github.com/fsouza/fake-gcs-server/fakestorage"
 	"github.com/google/tink/go/aead"
 	"github.com/google/tink/go/keyset"
-	certmagicgcs "github.com/grafana/certmagic-gcs"
+	"github.com/grafana/certmagic-gcs/storage"
 	"github.com/letsencrypt/pebble/v2/ca"
 	"github.com/letsencrypt/pebble/v2/db"
 	"github.com/letsencrypt/pebble/v2/va"
@@ -84,7 +84,7 @@ func TestGCSStorage(t *testing.T) {
 	assert.NoError(t, err)
 	ks, err := aead.New(kh)
 	assert.NoError(t, err)
-	storage, err := certmagicgcs.NewStorage(context.Background(), certmagicgcs.StorageConfig{
+	storage, err := storage.NewStorage(context.Background(), storage.Config{
 		BucketName: testBucket,
 		AEAD:       ks,
 		ClientOptions: []option.ClientOption{
