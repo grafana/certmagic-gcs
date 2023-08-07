@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	cloud.google.com/go/storage v1.31.0
-	github.com/caddyserver/caddy/v2 v2.7.2
+	github.com/caddyserver/caddy/v2 v2.7.3
 	github.com/caddyserver/certmagic v0.19.1
 	github.com/fsouza/fake-gcs-server v1.47.3
 	github.com/google/tink/go v1.7.0
@@ -51,8 +51,8 @@ require (
 	github.com/prometheus/common v0.39.0 // indirect
 	github.com/prometheus/procfs v0.9.0 // indirect
 	github.com/quic-go/qpack v0.4.0 // indirect
-	github.com/quic-go/qtls-go1-20 v0.3.0 // indirect
-	github.com/quic-go/quic-go v0.37.1 // indirect
+	github.com/quic-go/qtls-go1-20 v0.3.1 // indirect
+	github.com/quic-go/quic-go v0.37.3 // indirect
 	github.com/sirupsen/logrus v1.9.3 // indirect
 	github.com/zeebo/blake3 v0.2.3 // indirect
 	go.opencensus.io v0.24.0 // indirect
