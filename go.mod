@@ -5,7 +5,7 @@ go 1.19
 require (
 	cloud.google.com/go/storage v1.32.0
 	github.com/caddyserver/caddy/v2 v2.7.2
-	github.com/caddyserver/certmagic v0.19.1
+	github.com/caddyserver/certmagic v0.19.2
 	github.com/fsouza/fake-gcs-server v1.47.4
 	github.com/google/tink/go v1.7.0
 	github.com/letsencrypt/pebble/v2 v2.4.0
