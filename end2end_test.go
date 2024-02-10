@@ -104,7 +104,7 @@ func TestGCSStorage(t *testing.T) {
 
 	// Create a test handler
 	mux := http.NewServeMux()
-	mux.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
+	mux.HandleFunc("/", func(w http.ResponseWriter, _ *http.Request) {
 		fmt.Fprintf(w, "Ok")
 	})
 
