@@ -1,8 +1,6 @@
 linters-settings:
   govet:
-    check-shadowing: true
-    enable:
-      - fieldalignment
+    enable-all: true
   gocyclo:
     min-complexity: 10
   gocritic:
