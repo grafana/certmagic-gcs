@@ -5,13 +5,17 @@ updates:
   schedule:
     interval: daily
     time: "02:00"
-    timezone: UTC
+    timezone: Etc/UTC
   open-pull-requests-limit: 10
+  commit-message:
+    prefix: deps(go)
 - package-ecosystem: github-actions
   directory: "/"
   schedule:
     interval: weekly
     day: sunday
     time: "02:00"
-    timezone: UTC
+    timezone: Etc/UTC
   open-pull-requests-limit: 10
+  commit-message:
+    prefix: deps(actions)
