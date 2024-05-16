@@ -5,7 +5,7 @@ go 1.22.3
 require (
 	cloud.google.com/go/storage v1.40.0
 	github.com/caddyserver/caddy/v2 v2.7.6
-	github.com/caddyserver/certmagic v0.21.0
+	github.com/caddyserver/certmagic v0.21.1
 	github.com/fsouza/fake-gcs-server v1.49.0
 	github.com/google/tink/go v1.7.0
 	github.com/letsencrypt/pebble/v2 v2.5.1
@@ -21,7 +21,7 @@ require (
 	cloud.google.com/go/iam v1.1.8 // indirect
 	cloud.google.com/go/pubsub v1.37.0 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
-	github.com/caddyserver/zerossl v0.1.2 // indirect
+	github.com/caddyserver/zerossl v0.1.3 // indirect
 	github.com/cespare/xxhash/v2 v2.2.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/felixge/httpsnoop v1.0.4 // indirect
