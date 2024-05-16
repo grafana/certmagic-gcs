@@ -18,7 +18,7 @@ jobs:
         with:
           app-id: ${{ secrets.HG_RELEASE_TRIGGER_APP_ID }}
           private-key: ${{ secrets.HG_RELEASE_TRIGGER_APP_KEY }}
-      - uses: google-github-actions/release-please-action@v4
+      - uses: googleapis/release-please-action@v4
         with:
           token: ${{ steps.app-token.outputs.token }}
           config-file: .github/release-please-config.json
