@@ -6,7 +6,7 @@ require (
 	cloud.google.com/go/storage v1.41.0
 	github.com/caddyserver/caddy/v2 v2.8.4
 	github.com/caddyserver/certmagic v0.21.3
-	github.com/fsouza/fake-gcs-server v1.49.1
+	github.com/fsouza/fake-gcs-server v1.49.2
 	github.com/google/tink/go v1.7.0
 	github.com/letsencrypt/pebble/v2 v2.5.2
 	github.com/stretchr/testify v1.9.0
