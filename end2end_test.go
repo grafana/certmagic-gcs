@@ -50,7 +50,7 @@ func pebbleHandler(t *testing.T) http.Handler {
 	logger := testLogger(t)
 	db := db.NewMemoryStore()
 	ca := ca.New(logger, db, "", 0, 1, 100)
-	va := va.New(logger, 80, 443, false, "")
+	va := va.New(logger, 80, 443, false, "", db)
 	wfeImpl := wfe.New(logger, db, va, ca, false, false, 0, 0)
 	return wfeImpl.Handler()
 }
