@@ -3,7 +3,7 @@ module github.com/grafana/certmagic-gcs
 go 1.22.3
 
 require (
-	cloud.google.com/go/storage v1.42.0
+	cloud.google.com/go/storage v1.43.0
 	github.com/caddyserver/caddy/v2 v2.8.4
 	github.com/caddyserver/certmagic v0.21.3
 	github.com/fsouza/fake-gcs-server v1.49.2
