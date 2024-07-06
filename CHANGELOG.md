@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.1.3](https://github.com/grafana/certmagic-gcs/compare/v0.1.2...v0.1.3) (2024-07-06)
+
+
+### Dependencies
+
+* **go:** bump cloud.google.com/go/storage from 1.42.0 to 1.43.0 ([#265](https://github.com/grafana/certmagic-gcs/issues/265)) ([b651e2e](https://github.com/grafana/certmagic-gcs/commit/b651e2e5220f571f45ff23977be7792b700944d3))
+* **go:** bump google.golang.org/api from 0.184.0 to 0.185.0 ([#261](https://github.com/grafana/certmagic-gcs/issues/261)) ([c99eb83](https://github.com/grafana/certmagic-gcs/commit/c99eb831f8ff195e090fc5f6151f08cd6ead4bd0))
+* **go:** bump google.golang.org/api from 0.185.0 to 0.186.0 ([#263](https://github.com/grafana/certmagic-gcs/issues/263)) ([1fd54ab](https://github.com/grafana/certmagic-gcs/commit/1fd54ab3ecf24acc1fc6149307b4a674f8132ca2))
+* **go:** bump google.golang.org/api from 0.186.0 to 0.187.0 ([#264](https://github.com/grafana/certmagic-gcs/issues/264)) ([529d071](https://github.com/grafana/certmagic-gcs/commit/529d071d96d86849ef30de697e388ab4fc7da1bd))
+
 ## [0.1.2](https://github.com/grafana/certmagic-gcs/compare/v0.1.1...v0.1.2) (2024-06-15)
 
 
