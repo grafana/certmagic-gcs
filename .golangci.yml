@@ -21,10 +21,10 @@ linters:
   enable:
     - asciicheck
     - bodyclose
+    - copyloopvar
     - dupl
     - errcheck
     - exhaustive
-    - exportloopref
     - gocognit
     - goconst
     - gocritic
