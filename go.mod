@@ -6,20 +6,20 @@ require (
 	cloud.google.com/go/storage v1.43.0
 	github.com/caddyserver/caddy/v2 v2.8.4
 	github.com/caddyserver/certmagic v0.21.3
-	github.com/fsouza/fake-gcs-server v1.49.3
+	github.com/fsouza/fake-gcs-server v1.50.0
 	github.com/google/tink/go v1.7.0
 	github.com/letsencrypt/pebble/v2 v2.6.0
 	github.com/stretchr/testify v1.9.0
-	google.golang.org/api v0.197.0
+	google.golang.org/api v0.198.0
 )
 
 require (
 	cloud.google.com/go v0.115.1 // indirect
-	cloud.google.com/go/auth v0.9.3 // indirect
+	cloud.google.com/go/auth v0.9.4 // indirect
 	cloud.google.com/go/auth/oauth2adapt v0.2.4 // indirect
-	cloud.google.com/go/compute/metadata v0.5.0 // indirect
-	cloud.google.com/go/iam v1.2.0 // indirect
-	cloud.google.com/go/pubsub v1.42.0 // indirect
+	cloud.google.com/go/compute/metadata v0.5.1 // indirect
+	cloud.google.com/go/iam v1.2.1 // indirect
+	cloud.google.com/go/pubsub v1.43.0 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/caddyserver/zerossl v0.1.3 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
@@ -75,9 +75,9 @@ require (
 	golang.org/x/time v0.6.0 // indirect
 	golang.org/x/tools v0.21.1-0.20240508182429-e35e4ccd0d2d // indirect
 	google.golang.org/genproto v0.0.0-20240903143218-8af14fe29dc1 // indirect
-	google.golang.org/genproto/googleapis/api v0.0.0-20240827150818-7e3bb234dfed // indirect
+	google.golang.org/genproto/googleapis/api v0.0.0-20240903143218-8af14fe29dc1 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20240903143218-8af14fe29dc1 // indirect
-	google.golang.org/grpc v1.66.1 // indirect
+	google.golang.org/grpc v1.67.0 // indirect
 	google.golang.org/protobuf v1.34.2 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
