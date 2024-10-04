@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.1.4](https://github.com/grafana/certmagic-gcs/compare/v0.1.3...v0.1.4) (2024-10-04)
+
+
+### Dependencies
+
+* **go:** bump github.com/caddyserver/certmagic from 0.21.3 to 0.21.4 ([#281](https://github.com/grafana/certmagic-gcs/issues/281)) ([1c06985](https://github.com/grafana/certmagic-gcs/commit/1c0698599e37221e165c3aed5a8ebdc12907719c))
+* **go:** bump github.com/fsouza/fake-gcs-server from 1.49.3 to 1.50.0 ([#278](https://github.com/grafana/certmagic-gcs/issues/278)) ([fcdce74](https://github.com/grafana/certmagic-gcs/commit/fcdce7454b15f84e79dec01b87804df58ae054e7))
+* **go:** bump google.golang.org/api from 0.197.0 to 0.199.0 ([#280](https://github.com/grafana/certmagic-gcs/issues/280)) ([4886374](https://github.com/grafana/certmagic-gcs/commit/4886374f50a30ed4fd9ca949d4a566b44c1cea91))
+
 ## [0.1.3](https://github.com/grafana/certmagic-gcs/compare/v0.1.2...v0.1.3) (2024-09-17)
 
 
