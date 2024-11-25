@@ -9,7 +9,7 @@ require (
 	github.com/fsouza/fake-gcs-server v1.50.2
 	github.com/google/tink/go v1.7.0
 	github.com/letsencrypt/pebble/v2 v2.6.0
-	github.com/stretchr/testify v1.9.0
+	github.com/stretchr/testify v1.10.0
 	google.golang.org/api v0.209.0
 )
 
