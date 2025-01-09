@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.1.5](https://github.com/grafana/certmagic-gcs/compare/v0.1.4...v0.1.5) (2025-01-09)
+
+
+### Dependencies
+
+* **actions:** bump aquasecurity/trivy-action from 0.24.0 to 0.28.0 ([#290](https://github.com/grafana/certmagic-gcs/issues/290)) ([3c5b803](https://github.com/grafana/certmagic-gcs/commit/3c5b803999ff2ab0bc4dff142c57f2604b162eaa))
+* **actions:** bump aquasecurity/trivy-action from 0.28.0 to 0.29.0 ([#301](https://github.com/grafana/certmagic-gcs/issues/301)) ([7435c2e](https://github.com/grafana/certmagic-gcs/commit/7435c2e7d1aaa420c78da2fd0aa1583d083ae373))
+* **go:** bump cloud.google.com/go/storage from 1.43.0 to 1.47.0 ([#297](https://github.com/grafana/certmagic-gcs/issues/297)) ([8c93c72](https://github.com/grafana/certmagic-gcs/commit/8c93c72c7c59845e87bb4a1a6eaf2bb4a57065d4))
+* **go:** bump github.com/caddyserver/caddy/v2 from 2.8.4 to 2.9.0 ([#310](https://github.com/grafana/certmagic-gcs/issues/310)) ([b818441](https://github.com/grafana/certmagic-gcs/commit/b81844162618f7f138c1ba45e731083755be06ba))
+* **go:** bump github.com/fsouza/fake-gcs-server from 1.50.0 to 1.50.2 ([#288](https://github.com/grafana/certmagic-gcs/issues/288)) ([ccdc0e6](https://github.com/grafana/certmagic-gcs/commit/ccdc0e6ae300bc73a8e2ce034ca60fac90b0fac9))
+* **go:** bump github.com/stretchr/testify from 1.9.0 to 1.10.0 ([#302](https://github.com/grafana/certmagic-gcs/issues/302)) ([7af0ec3](https://github.com/grafana/certmagic-gcs/commit/7af0ec3e8a9d065dcfb895941be560052f9d8353))
+* **go:** bump google.golang.org/api from 0.199.0 to 0.209.0 ([#299](https://github.com/grafana/certmagic-gcs/issues/299)) ([c544b4d](https://github.com/grafana/certmagic-gcs/commit/c544b4da243e4c59665e6b9281b0f5db8a4daaa5))
+* **go:** bump google.golang.org/api from 0.209.0 to 0.215.0 ([#312](https://github.com/grafana/certmagic-gcs/issues/312)) ([36f1534](https://github.com/grafana/certmagic-gcs/commit/36f1534cae01dc808e5dd00849157361d4a686c5))
+
 ## [0.1.4](https://github.com/grafana/certmagic-gcs/compare/v0.1.3...v0.1.4) (2024-10-04)
 
 
