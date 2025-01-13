@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.1.6](https://github.com/grafana/certmagic-gcs/compare/v0.1.5...v0.1.6) (2025-01-13)
+
+
+### Dependencies
+
+* **go:** bump github.com/caddyserver/caddy/v2 from 2.9.0 to 2.9.1 ([#316](https://github.com/grafana/certmagic-gcs/issues/316)) ([14ce583](https://github.com/grafana/certmagic-gcs/commit/14ce583b544706b8f6f5958073d0c6332f1671f9))
+* **go:** bump github.com/caddyserver/certmagic from 0.21.5 to 0.21.6 ([#315](https://github.com/grafana/certmagic-gcs/issues/315)) ([91fab0b](https://github.com/grafana/certmagic-gcs/commit/91fab0b8a7c8be2bc4f322f16c6f7dc35db48934))
+* **go:** bump github.com/fsouza/fake-gcs-server from 1.50.2 to 1.52.1 ([#317](https://github.com/grafana/certmagic-gcs/issues/317)) ([9dfd273](https://github.com/grafana/certmagic-gcs/commit/9dfd2736004f0b5ebadc6e20e44c6485b06c49e8))
+
 ## [0.1.5](https://github.com/grafana/certmagic-gcs/compare/v0.1.4...v0.1.5) (2025-01-09)
 
 
