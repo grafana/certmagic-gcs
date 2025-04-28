@@ -17,7 +17,7 @@ jobs:
       with:
         persist-credentials: false
     - name: Install Trivy
-      uses: aquasecurity/setup-trivy@ff1b8b060f23b650436d419b5e13f67f5d4c3087 # v0.2.2
+      uses: aquasecurity/setup-trivy@9ea583eb67910444b1f64abf338bd2e105a0a93d # v0.2.3
       with:
         version: v0.58.1
         cache: true
