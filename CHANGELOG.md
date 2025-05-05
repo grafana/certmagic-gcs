@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.1.7](https://github.com/grafana/certmagic-gcs/compare/v0.1.6...v0.1.7) (2025-05-05)
+
+
+### Bug Fixes
+
+* error checking against wrapped errors ([b6fa6b4](https://github.com/grafana/certmagic-gcs/commit/b6fa6b4c9e48031f393b98fe8c9e8d8fed8777ac))
+
+
+### Dependencies
+
+* **actions:** bump actions/create-github-app-token from 1.12.0 to 2.0.6 ([#326](https://github.com/grafana/certmagic-gcs/issues/326)) ([fb30f0e](https://github.com/grafana/certmagic-gcs/commit/fb30f0e76bd2eb99d4e4fe3c041574d2296e3dda))
+* **actions:** bump aquasecurity/setup-trivy from 0.2.2 to 0.2.3 ([#323](https://github.com/grafana/certmagic-gcs/issues/323)) ([95cee7c](https://github.com/grafana/certmagic-gcs/commit/95cee7cc23319db041c55ff16fa439ab77957bef))
+* **actions:** bump github/codeql-action from 3.28.16 to 3.28.17 ([#325](https://github.com/grafana/certmagic-gcs/issues/325)) ([afd8ab3](https://github.com/grafana/certmagic-gcs/commit/afd8ab366bc71bd63fdc492d840253d2afc4e981))
+* **actions:** bump golangci/golangci-lint-action from 6.5.2 to 7.0.0 ([#327](https://github.com/grafana/certmagic-gcs/issues/327)) ([04a852d](https://github.com/grafana/certmagic-gcs/commit/04a852d4e7265608239664b2159525231bf56a53))
+
 ## [0.1.6](https://github.com/grafana/certmagic-gcs/compare/v0.1.5...v0.1.6) (2025-01-13)
 
 
