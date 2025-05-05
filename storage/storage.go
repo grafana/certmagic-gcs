@@ -113,7 +113,7 @@ func (s *Storage) Delete(ctx context.Context, key string) error {
 // and there was no error checking.
 func (s *Storage) Exists(ctx context.Context, key string) bool {
 	_, err := s.bucket.Object(key).Attrs(ctx)
-	return err != storage.ErrObjectNotExist
+	return err == nil
 }
 
 // List returns all keys that match prefix.
@@ -186,7 +186,7 @@ func (s *Storage) Lock(ctx context.Context, key string) error {
 	for {
 		attrs, err := obj.Attrs(ctx)
 		// create the lock if it doesn't exists
-		if err == storage.ErrObjectNotExist {
+		if errors.Is(err, storage.ErrObjectNotExist) {
 			w := obj.NewWriter(ctx)
 			if _, err = w.Write([]byte{}); err != nil {
 				return fmt.Errorf("creating %s: %w", lockKey, err)
@@ -230,7 +230,7 @@ func (s *Storage) Unlock(ctx context.Context, key string) error {
 	lockKey := s.objLockName(key)
 	obj := s.bucket.Object(lockKey)
 	_, err := obj.Update(ctx, storage.ObjectAttrsToUpdate{TemporaryHold: false})
-	if err == storage.ErrObjectNotExist {
+	if errors.Is(err, storage.ErrObjectNotExist) {
 		return nil
 	}
 	if err != nil {
