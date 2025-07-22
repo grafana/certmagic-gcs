@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.1.8](https://github.com/grafana/certmagic-gcs/compare/v0.1.7...v0.1.8) (2025-07-22)
+
+
+### Dependencies
+
+* **actions:** bump actions/setup-go from 5.4.0 to 5.5.0 ([#332](https://github.com/grafana/certmagic-gcs/issues/332)) ([7de56df](https://github.com/grafana/certmagic-gcs/commit/7de56dff4be388b8aeca19690d44496fdfba535a))
+* **actions:** bump github/codeql-action from 3.28.17 to 3.28.18 ([#333](https://github.com/grafana/certmagic-gcs/issues/333)) ([ae4497b](https://github.com/grafana/certmagic-gcs/commit/ae4497bb957d9ba6cfda3edea4dc00d8478c5f41))
+* **actions:** bump github/codeql-action from 3.28.18 to 3.29.0 ([#336](https://github.com/grafana/certmagic-gcs/issues/336)) ([6285af7](https://github.com/grafana/certmagic-gcs/commit/6285af7e013b85948ae3167a1b4d545836843c76))
+* **actions:** bump github/codeql-action from 3.29.0 to 3.29.2 ([#338](https://github.com/grafana/certmagic-gcs/issues/338)) ([4b48915](https://github.com/grafana/certmagic-gcs/commit/4b489150a102c2ee08141a74977a85d7d1ce41cd))
+* **actions:** bump golangci/golangci-lint-action from 7.0.0 to 8.0.0 ([#331](https://github.com/grafana/certmagic-gcs/issues/331)) ([b243b0d](https://github.com/grafana/certmagic-gcs/commit/b243b0d50b8e02c786dc5bd27a3ef9f5629029bc))
+
 ## [0.1.7](https://github.com/grafana/certmagic-gcs/compare/v0.1.6...v0.1.7) (2025-05-05)
 
 
