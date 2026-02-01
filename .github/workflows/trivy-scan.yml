@@ -51,7 +51,7 @@ jobs:
           --skip-db-update \
           .
     - name: Upload Trivy scan results to GitHub Security tab
-      uses: github/codeql-action/upload-sarif@181d5eefc20863364f96762470ba6f862bdef56b # v3.29.2
+      uses: github/codeql-action/upload-sarif@b20883b0cd1f46c72ae0ba6d1090936928f9fa30 # v4.32.0
       with:
         sarif_file: 'trivy-results.sarif'
       if: always() && github.repository == 'grafana/certmagic-gcs'
