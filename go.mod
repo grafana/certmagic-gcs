@@ -2,7 +2,7 @@ module github.com/grafana/certmagic-gcs
 
 go 1.23.0
 
-toolchain go1.24.2
+toolchain go1.26.3
 
 require (
 	cloud.google.com/go/storage v1.50.0
