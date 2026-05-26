@@ -1,10 +1,13 @@
 package storage
 
 import (
+	"bytes"
 	"context"
 	"io"
 	"io/fs"
+	"strings"
 	"testing"
+	"time"
 
 	"cloud.google.com/go/storage"
 	"github.com/fsouza/fake-gcs-server/fakestorage"
@@ -21,7 +24,7 @@ const (
 func setupTestStorage(t *testing.T, objects []fakestorage.Object) *Storage {
 	server := fakestorage.NewServer(objects)
 	defer server.Stop()
-	s, err := NewStorage(context.Background(), Config{
+	s, err := NewStorage(t.Context(), Config{
 		BucketName: testBucket,
 		ClientOptions: []option.ClientOption{
 			option.WithHTTPClient(server.HTTPClient()),
@@ -44,7 +47,7 @@ func TestSimpleOperations(t *testing.T) {
 	key := "some/object/file.txt"
 	content := "data"
 
-	ctx := context.Background()
+	ctx := t.Context()
 
 	// Exists
 	assert.False(t, s.Exists(ctx, key))
@@ -73,7 +76,7 @@ func TestSimpleOperations(t *testing.T) {
 }
 
 func TestDeleteOnlyIfKeyStillExists(t *testing.T) {
-	ctx := context.Background()
+	ctx := t.Context()
 	s := setupTestStorage(t, []fakestorage.Object{
 		{ObjectAttrs: fakestorage.ObjectAttrs{BucketName: testBucket, Name: "/a/b/1.txt"}},
 	})
@@ -82,7 +85,7 @@ func TestDeleteOnlyIfKeyStillExists(t *testing.T) {
 }
 
 func TestList(t *testing.T) {
-	ctx := context.Background()
+	ctx := t.Context()
 	s := setupTestStorage(t, []fakestorage.Object{
 		{ObjectAttrs: fakestorage.ObjectAttrs{BucketName: testBucket, Name: "/a/b/1.txt"}},
 		{ObjectAttrs: fakestorage.ObjectAttrs{BucketName: testBucket, Name: "/a/b/c1/2.txt"}},
@@ -102,7 +105,7 @@ func TestLock(t *testing.T) {
 	s := setupTestStorage(t, []fakestorage.Object{
 		{ObjectAttrs: fakestorage.ObjectAttrs{BucketName: testBucket, Name: "/a/b/c"}},
 	})
-	ctx := context.Background()
+	ctx := t.Context()
 	err := s.Lock(ctx, "a")
 	assert.NoError(t, err)
 	_, err = s.bucket.Object("a.lock").Attrs(ctx)
@@ -110,7 +113,7 @@ func TestLock(t *testing.T) {
 }
 
 func TestUnlock(t *testing.T) {
-	ctx := context.Background()
+	ctx := t.Context()
 	s := setupTestStorage(t, []fakestorage.Object{
 		{ObjectAttrs: fakestorage.ObjectAttrs{BucketName: testBucket, Name: "/a.lock"}},
 	})
@@ -121,7 +124,7 @@ func TestUnlock(t *testing.T) {
 }
 
 func TestEncryption(t *testing.T) {
-	ctx := context.Background()
+	ctx := t.Context()
 	s := setupTestStorage(t, []fakestorage.Object{
 		{
 			ObjectAttrs: fakestorage.ObjectAttrs{
@@ -162,7 +165,7 @@ func TestEncryption(t *testing.T) {
 }
 
 func TestErrNotExist(t *testing.T) {
-	ctx := context.Background()
+	ctx := t.Context()
 	s := setupTestStorage(t, []fakestorage.Object{
 		{
 			ObjectAttrs: fakestorage.ObjectAttrs{
@@ -178,4 +181,88 @@ func TestErrNotExist(t *testing.T) {
 	assert.ErrorIs(t, err, fs.ErrNotExist)
 	_, err = s.Stat(ctx, key)
 	assert.ErrorIs(t, err, fs.ErrNotExist)
+}
+
+func setupFuzzStorage(f *testing.F, objects []fakestorage.Object) *Storage {
+	f.Helper()
+	server := fakestorage.NewServer(objects)
+	f.Cleanup(server.Stop)
+	s, err := NewStorage(context.Background(), Config{
+		BucketName: testBucket,
+		ClientOptions: []option.ClientOption{
+			option.WithHTTPClient(server.HTTPClient()),
+			option.WithoutAuthentication(),
+		},
+	})
+	if err != nil {
+		f.Fatal(err)
+	}
+	return s
+}
+
+func FuzzStoreLoadRoundTrip(f *testing.F) {
+	f.Add("certs/example.com/cert.pem", []byte("certificate data"))
+	f.Add("keys/private.key", []byte("private key content"))
+	f.Add("a", []byte(""))
+	f.Add("path/with spaces/file.txt", []byte("\x00\xff\xfe"))
+	f.Add("key\x00with\x00nulls", []byte("value"))
+
+	s := setupFuzzStorage(f, []fakestorage.Object{
+		{ObjectAttrs: fakestorage.ObjectAttrs{BucketName: testBucket, Name: "seed/"}},
+	})
+
+	f.Fuzz(func(t *testing.T, key string, value []byte) {
+		if key == "" || key == "." || key == ".." {
+			t.Skip("invalid GCS object name")
+		}
+		ctx, cancel := context.WithTimeout(t.Context(), 5*time.Second)
+		defer cancel()
+		if err := s.Store(ctx, key, value); err != nil {
+			t.Skip("store rejected key")
+		}
+		loaded, err := s.Load(ctx, key)
+		if err != nil {
+			t.Fatalf("Load(%q) failed after successful Store: %v", key, err)
+		}
+		if !bytes.Equal(value, loaded) {
+			t.Fatalf("round-trip failed for key %q: got %d bytes, want %d bytes", key, len(loaded), len(value))
+		}
+	})
+}
+
+func FuzzList(f *testing.F) {
+	f.Add("/a/b/", true)
+	f.Add("/a/b/", false)
+	f.Add("", true)
+	f.Add("nonexistent/", false)
+	f.Add("/", true)
+
+	s := setupFuzzStorage(f, []fakestorage.Object{
+		{ObjectAttrs: fakestorage.ObjectAttrs{BucketName: testBucket, Name: "/x/y/10.txt"}},
+		{ObjectAttrs: fakestorage.ObjectAttrs{BucketName: testBucket, Name: "/x/y/z1/20.txt"}},
+		{ObjectAttrs: fakestorage.ObjectAttrs{BucketName: testBucket, Name: "/x/y/z1/30.txt"}},
+		{ObjectAttrs: fakestorage.ObjectAttrs{BucketName: testBucket, Name: "/x/y/z2/w/40.txt"}},
+	})
+
+	f.Fuzz(func(t *testing.T, prefix string, recursive bool) {
+		ctx, cancel := context.WithTimeout(t.Context(), 5*time.Second)
+		defer cancel()
+		_, _ = s.List(ctx, prefix, recursive)
+	})
+}
+
+func FuzzObjLockName(f *testing.F) {
+	f.Add("certs/example.com/cert.pem")
+	f.Add("")
+	f.Add("../../../etc/passwd")
+	f.Add(strings.Repeat("a", 10000))
+	f.Add("key\x00with\x00nulls")
+
+	f.Fuzz(func(t *testing.T, key string) {
+		s := &Storage{}
+		result := s.objLockName(key)
+		if !strings.HasSuffix(result, ".lock") {
+			t.Fatalf("expected .lock suffix, got %q", result)
+		}
+	})
 }
