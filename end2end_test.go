@@ -49,9 +49,15 @@ func pebbleHandler(t *testing.T) http.Handler {
 
 	logger := testLogger(t)
 	db := db.NewMemoryStore()
-	ca := ca.New(logger, db, "", 0, 1, 100)
+	profiles := map[string]ca.Profile{
+		"default": {
+			Description:    "The default profile",
+			ValidityPeriod: 0,
+		},
+	}
+	ca := ca.New(logger, db, "", "rsa", 1, 100, profiles)
 	va := va.New(logger, 80, 443, false, "", db)
-	wfeImpl := wfe.New(logger, db, va, ca, false, false, 0, 0)
+	wfeImpl := wfe.New(logger, db, va, ca, []string{"pebble.letsencrypt.org"}, false, false, 0, 0)
 	return wfeImpl.Handler()
 }
 
