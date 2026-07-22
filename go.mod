@@ -10,7 +10,7 @@ require (
 	github.com/caddyserver/certmagic v0.25.4
 	github.com/fsouza/fake-gcs-server v1.52.1
 	github.com/google/tink/go v1.7.0
-	github.com/letsencrypt/pebble/v2 v2.10.0
+	github.com/letsencrypt/pebble/v2 v2.10.1
 	github.com/stretchr/testify v1.11.1
 	google.golang.org/api v0.277.0
 )
