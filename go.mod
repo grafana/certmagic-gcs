@@ -7,7 +7,7 @@ toolchain go1.26.5
 require (
 	cloud.google.com/go/storage v1.56.0
 	github.com/caddyserver/caddy/v2 v2.11.4
-	github.com/caddyserver/certmagic v0.25.3
+	github.com/caddyserver/certmagic v0.25.4
 	github.com/fsouza/fake-gcs-server v1.52.1
 	github.com/google/tink/go v1.7.0
 	github.com/letsencrypt/pebble/v2 v2.10.0
