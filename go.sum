@@ -36,8 +36,8 @@ github.com/GoogleCloudPlatform/opentelemetry-operations-go/exporter/metric v0.58
 github.com/GoogleCloudPlatform/opentelemetry-operations-go/exporter/metric v0.58.0/go.mod h1:PDQyYBOzGtQgvshQI//UiXyzuMHCz0ndyu+4W8X82vM=
 github.com/GoogleCloudPlatform/opentelemetry-operations-go/internal/cloudmock v0.58.0 h1:IBF8BbhKJkMsON/eY+LMu3aF3XMiotCb9KvkUmEkOJo=
 github.com/GoogleCloudPlatform/opentelemetry-operations-go/internal/cloudmock v0.58.0/go.mod h1:dzcEjy1WJ0Q4u9twNR3LcLhNoYMRCrMCMafpxa0TjPQ=
-github.com/GoogleCloudPlatform/opentelemetry-operations-go/internal/resourcemapping v0.58.0 h1:SBZzZCiPmDrUV7NSCWY54OnKikO/oTydPCvyEyYaDDE=
-github.com/GoogleCloudPlatform/opentelemetry-operations-go/internal/resourcemapping v0.58.0/go.mod h1:YqwkQPrWSC7+byyc1VlKbWLBF5JsW5IoL6xUkemYSXk=
+github.com/GoogleCloudPlatform/opentelemetry-operations-go/internal/resourcemapping v0.59.0 h1:18FRm6ZcN/x9+ZmhMr96hLcTtlLn2/gHPuDLVeg7XcY=
+github.com/GoogleCloudPlatform/opentelemetry-operations-go/internal/resourcemapping v0.59.0/go.mod h1:YqwkQPrWSC7+byyc1VlKbWLBF5JsW5IoL6xUkemYSXk=
 github.com/beorn7/perks v1.0.1 h1:VlbKKnNfV8bJzeqoa4cOKqO6bYr3WgKZxO8Z16+hsOM=
 github.com/beorn7/perks v1.0.1/go.mod h1:G2ZrVWU2WbWT9wwq4/hrbKbnv/1ERSJQ0ibhJ6rlkpw=
 github.com/caddyserver/caddy/v2 v2.11.4 h1:XKxkMTgNSizEvKG6QHue6cAsFOteU2qA61w2tKkCWi0=
