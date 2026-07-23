@@ -5,14 +5,14 @@ go 1.26.4
 toolchain go1.26.5
 
 require (
-	cloud.google.com/go/storage v1.56.0
+	cloud.google.com/go/storage v1.63.1
 	github.com/caddyserver/caddy/v2 v2.11.4
 	github.com/caddyserver/certmagic v0.25.4
-	github.com/fsouza/fake-gcs-server v1.52.1
+	github.com/fsouza/fake-gcs-server v1.55.1
 	github.com/google/tink/go v1.7.0
 	github.com/letsencrypt/pebble/v2 v2.10.1
 	github.com/stretchr/testify v1.11.1
-	google.golang.org/api v0.287.1
+	google.golang.org/api v0.289.0
 )
 
 require (
@@ -23,7 +23,6 @@ require (
 	cloud.google.com/go/compute/metadata v0.9.0 // indirect
 	cloud.google.com/go/iam v1.12.0 // indirect
 	cloud.google.com/go/monitoring v1.30.0 // indirect
-	cloud.google.com/go/pubsub v1.51.0 // indirect
 	cloud.google.com/go/pubsub/v2 v2.6.1 // indirect
 	github.com/GoogleCloudPlatform/opentelemetry-operations-go/detectors/gcp v1.34.0 // indirect
 	github.com/GoogleCloudPlatform/opentelemetry-operations-go/exporter/metric v0.58.0 // indirect
