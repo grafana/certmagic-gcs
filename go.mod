@@ -12,7 +12,7 @@ require (
 	github.com/google/tink/go v1.7.0
 	github.com/letsencrypt/pebble/v2 v2.10.1
 	github.com/stretchr/testify v1.11.1
-	google.golang.org/api v0.287.1
+	google.golang.org/api v0.290.0
 )
 
 require (
