@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.9](https://github.com/grafana/certmagic-gcs/compare/v0.1.8...v0.1.9) (2026-08-18)
+
+
+### Bug Fixes
+
+* **security/unknown/:** update go toolchain directive to v1.26.6 [security] ([#549](https://github.com/grafana/certmagic-gcs/issues/549)) ([551bd07](https://github.com/grafana/certmagic-gcs/commit/551bd07bab46f169fbf22dcddcbd99a06223f92a))
+* **security/unknown/:** update module golang.org/x/mod to v0.40.0 [security] ([#550](https://github.com/grafana/certmagic-gcs/issues/550)) ([a43fbf6](https://github.com/grafana/certmagic-gcs/commit/a43fbf6dfdf5779f06d91d7e86838a411f6c8ed1))
+
 ## [0.1.8](https://github.com/grafana/certmagic-gcs/compare/v0.1.7...v0.1.8) (2026-07-23)
 
 
