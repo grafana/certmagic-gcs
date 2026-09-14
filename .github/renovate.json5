@@ -1,0 +1,16 @@
+{
+  $schema: 'https://docs.renovatebot.com/renovate-schema.json',
+  packageRules: [
+    {
+      // release-please keys its visible "Dependencies" changelog section off the
+      // `deps` commit type. The inherited `config:best-practices` preset would
+      // otherwise commit routine updates as `chore(deps)`, which is hidden.
+      matchPackageNames: ['*'],
+      semanticCommitType: 'deps',
+    },
+  ],
+  vulnerabilityAlerts: {
+    // Security updates stay under "Bug Fixes" rather than "Dependencies".
+    semanticCommitType: 'fix',
+  },
+}
