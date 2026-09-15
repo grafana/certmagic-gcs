@@ -1,5 +1,12 @@
 # Certmagic Storage Backend for Google Cloud Storage
 
+> [!WARNING]
+> **Deprecated.** No longer maintained. This repository will be archived.
+>
+> Existing builds are unaffected — published versions stay on the Go module
+> proxy, so `xcaddy --with github.com/grafana/certmagic-gcs` keeps working.
+> Forks welcome.
+
 This library allows you to use Google Cloud Storage as key/certificate storage backend for your [Certmagic](https://github.com/caddyserver/certmagic)-enabled HTTPS server. To protect your keys from unwanted attention, client-side encryption is possible.
 
 ## Usage
