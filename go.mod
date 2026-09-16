@@ -1,3 +1,4 @@
+// Deprecated: no longer maintained. Fork if you need it.
 module github.com/grafana/certmagic-gcs
 
 go 1.26.4
