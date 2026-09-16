@@ -1,5 +1,26 @@
 # Changelog
 
+## [0.1.9](https://github.com/grafana/certmagic-gcs/compare/v0.1.8...v0.1.9) (2026-09-16)
+
+
+### Bug Fixes
+
+* **deps:** update module google.golang.org/api to v0.297.0 ([#538](https://github.com/grafana/certmagic-gcs/issues/538)) ([5589bb3](https://github.com/grafana/certmagic-gcs/commit/5589bb35ed0b256fa7003232dc3fbe02f25a3003))
+* **security/unknown/:** update go toolchain directive to v1.26.6 [security] ([#549](https://github.com/grafana/certmagic-gcs/issues/549)) ([551bd07](https://github.com/grafana/certmagic-gcs/commit/551bd07bab46f169fbf22dcddcbd99a06223f92a))
+* **security/unknown/:** update module golang.org/x/crypto to v0.56.0 [security] ([#562](https://github.com/grafana/certmagic-gcs/issues/562)) ([1804832](https://github.com/grafana/certmagic-gcs/commit/180483279357241c2caf14f083c86b109b6b10b2))
+* **security/unknown/:** update module golang.org/x/mod to v0.40.0 [security] ([#550](https://github.com/grafana/certmagic-gcs/issues/550)) ([a43fbf6](https://github.com/grafana/certmagic-gcs/commit/a43fbf6dfdf5779f06d91d7e86838a411f6c8ed1))
+
+
+### Documentation
+
+* mark module as deprecated and pending archival ([#574](https://github.com/grafana/certmagic-gcs/issues/574)) ([12c5628](https://github.com/grafana/certmagic-gcs/commit/12c562856aad8921763686e14bb1d01fa0a84e3c))
+
+
+### Dependencies
+
+* **deps:** update module cloud.google.com/go/storage to v1.67.1 ([#576](https://github.com/grafana/certmagic-gcs/issues/576)) ([ecfb88d](https://github.com/grafana/certmagic-gcs/commit/ecfb88d8a66387c250574f9121f952f4b02d53ef))
+* mark module as deprecated ([#577](https://github.com/grafana/certmagic-gcs/issues/577)) ([a697e0f](https://github.com/grafana/certmagic-gcs/commit/a697e0f93d4a0558289641f6f813cab1acc54e65))
+
 ## [0.1.8](https://github.com/grafana/certmagic-gcs/compare/v0.1.7...v0.1.8) (2026-07-23)
 
 
