@@ -30,8 +30,8 @@ cloud.google.com/go/trace v1.16.0/go.mod h1:r+bdAn16dKLSV1G2D5v3e58IlQlizfxWrUfj
 code.pfad.fr/check v1.1.0 h1:GWvjdzhSEgHvEHe2uJujDcpmZoySKuHQNrZMfzfO0bE=
 code.pfad.fr/check v1.1.0/go.mod h1:NiUH13DtYsb7xp5wll0U4SXx7KhXQVCtRgdC96IPfoM=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
-github.com/GoogleCloudPlatform/opentelemetry-operations-go/detectors/gcp v1.36.0 h1:3SdxXLkgAfiHRWcGTq6fneq9jgoJzneiY0yPQnjoT2E=
-github.com/GoogleCloudPlatform/opentelemetry-operations-go/detectors/gcp v1.36.0/go.mod h1:1iIdl0k+ppn9wT0wzR9H7HkSvIui/4qgtnKW10cQtds=
+github.com/GoogleCloudPlatform/opentelemetry-operations-go/detectors/gcp v1.38.0 h1:rmzbFS2CkHq0y2L5LkMVWm+QXjjNEXxjmhrJqga/QGk=
+github.com/GoogleCloudPlatform/opentelemetry-operations-go/detectors/gcp v1.38.0/go.mod h1:iIyrdhveU5Ow84ipRlxtjCOQnIM0DiqSMxuxm50xwZY=
 github.com/GoogleCloudPlatform/opentelemetry-operations-go/exporter/metric v0.58.0 h1:ZYGajzJNcirVZpT1rltgf9iM+j9zZ4v8V9DrF+xKRJ8=
 github.com/GoogleCloudPlatform/opentelemetry-operations-go/exporter/metric v0.58.0/go.mod h1:PDQyYBOzGtQgvshQI//UiXyzuMHCz0ndyu+4W8X82vM=
 github.com/GoogleCloudPlatform/opentelemetry-operations-go/internal/cloudmock v0.58.0 h1:IBF8BbhKJkMsON/eY+LMu3aF3XMiotCb9KvkUmEkOJo=
